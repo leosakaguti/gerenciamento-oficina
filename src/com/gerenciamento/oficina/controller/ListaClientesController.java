@@ -1,15 +1,24 @@
 package com.gerenciamento.oficina.controller;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.gerenciamento.oficina.dao.ClienteDAO;
+import com.gerenciamento.oficina.dao.Conexao;
 import com.gerenciamento.oficina.entity.Cliente;
 
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,9 +55,6 @@ public class ListaClientesController implements Initializable{
 
     @FXML
     private TextField fieldCPF;
-
-    @FXML
-    private Button btnFiltrarCPF;
 
     @FXML
     private Button btnNovo;
@@ -94,6 +100,11 @@ public class ListaClientesController implements Initializable{
 	public static final String CLIENTE_INCLUIR = " - Incluir";
 
 	private Stage stage;
+	
+	Connection connection = null;
+    Statement statement = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet rs = null;
 
     @FXML
     void onClickBtnEditar(ActionEvent event) {
@@ -136,11 +147,6 @@ public class ListaClientesController implements Initializable{
 			alerta.setContentText("Por favor, escolha um cliente na tabela!");
 			alerta.show();
 		}
-    }
-
-    @FXML
-    void onClickBtnFiltrarCPF(ActionEvent event) {
-    	
     }
 
     @FXML
@@ -191,42 +197,98 @@ public class ListaClientesController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		this.setClienteDAO(new ClienteDAO());
 		this.carregarTableViewClientes();
+		this.selecionarItemTableViewClientes(null);
 		
-		/*fieldCPF.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            if (oldValue != null && (newValue.length() < oldValue.length())) {
-                tbvClientes.setItems(getObservableListaClientes());
-            }
-            String value = newValue.toLowerCase();
-            ObservableList<Cliente> subentries = FXCollections.observableArrayList();
-
-            long count = tbvClientes.getColumns().stream().count();
-            for (int i = 0; i < tbvClientes.getItems().size(); i++) {
-                for (int j = 0; j < count; j++) {
-                    String entry = "" + tbvClientes.getColumns().get(j).getCellData(i);
-                    if (entry.toLowerCase().contains(value)) {
-                        subentries.add(tbvClientes.getItems().get(i));
-                        break;
-                    }
-                }
-            }
-            tbvClientes.setItems(subentries);
-        });*/
+		this.tbvClientes.getSelectionModel().selectedItemProperty()
+		.addListener((observable, oldValue, newValue) -> selecionarItemTableViewClientes(newValue));
 		this.configuraStage();		
 	}
 	
 	public void carregarTableViewClientes() {
-		this.tbcCodCliente.setCellValueFactory(new PropertyValueFactory<>("cod_cliente"));
-		this.tbcContato.setCellValueFactory(new PropertyValueFactory<>("num_contato"));
-		this.tbcCPF.setCellValueFactory(new PropertyValueFactory<>("cpf_cnpj"));
-		this.tbcEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
-		this.tbcNomeCliente.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		this.tbcUF.setCellValueFactory(new PropertyValueFactory<>("uf"));
+		ObservableList<Cliente> results = FXCollections.observableArrayList();
 
-		this.setListaClientes(this.getClienteDAO().getAll());
-		this.setObservableListaClientes(FXCollections.observableArrayList(this.getListaClientes()));
-		this.tbvClientes.setItems(this.getObservableListaClientes());
+		tbcCodCliente.setCellValueFactory(new PropertyValueFactory<>("cod_cliente"));
+		tbcNomeCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNomeCliente()));
+		tbcCPF.setCellValueFactory(new PropertyValueFactory<>("cpf_cnpj"));
+        tbcUF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUnidadeFederativa()));
+        tbcContato.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNumContato()));
+        tbcEndereco.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getEnderecoCliente()));
+
+        String query = "SELECT cod_cliente, nome, cpf_cnpj, uf, num_contato, endereco FROM cliente";
+
+        try {
+            connection = new Conexao().getConnection();
+            statement = connection.createStatement();
+            rs = statement.executeQuery(query);
+
+            while (rs.next()) {
+                Cliente clientes = new Cliente();
+                clientes.setCodCliente(rs.getLong("cod_cliente"));
+                clientes.setNomeCliente(rs.getString("nome"));
+                clientes.setCpf(rs.getLong("cpf_cnpj"));
+                clientes.setUnidadeFederativa(rs.getString("uf"));
+                clientes.setNumContato(rs.getString("num_contato"));
+                clientes.setEnderecoCliente(rs.getString("endereco"));
+
+                results.add(clientes);
+            }
+            tbvClientes.setItems(results);
+
+            // Filtro de pesquisa
+            FilteredList<Cliente> clientesFilteredList = new FilteredList<>(results, b -> true);
+            fieldCPF.textProperty().addListener((observable, oldValue, newValue) -> {
+                clientesFilteredList.setPredicate(clientes -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return true;
+                    }
+
+                    String lowerCaseFilter = newValue.toLowerCase();
+
+                    if (clientes.getNomeCliente().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true;
+                    } else if (clientes.getCpf().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true;
+                    } else if (clientes.getUnidadeFederativa().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true;
+                    } else if (clientes.getNumContato().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true;
+                    } else if (clientes.getEnderecoCliente().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            });
+            SortedList<Cliente> clientesSortedList = new SortedList<>(clientesFilteredList);
+            clientesSortedList.comparatorProperty().bind(tbvClientes.comparatorProperty());
+
+            tbvClientes.setItems(clientesSortedList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
-
+	
+	public void selecionarItemTableViewClientes(Cliente cliente) {
+		if (cliente != null) {
+			this.btnEditar.setDisable(false);
+			this.btnExcluir.setDisable(false);
+		} else {
+			this.btnEditar.setDisable(true);
+			this.btnExcluir.setDisable(true);
+		}
+	}
+	
 	public boolean onCloseQuery() {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Pergunta");
@@ -241,9 +303,8 @@ public class ListaClientesController implements Initializable{
 	public boolean onShowTelaClienteEditar(Cliente cliente, String operacao) {
 		try {
 			FXMLLoader loader = new FXMLLoader(
-					getClass().getResource("../view/ClienteEdit.fxml"));
+					getClass().getResource("/com/gerenciamento/oficina/view/ClienteEdit.fxml"));
 			Parent clienteEditXML = loader.load();
-
 			Stage janelaClienteEditar = new Stage();
 			janelaClienteEditar.setTitle("Cliente" + operacao);
 			janelaClienteEditar.initModality(Modality.APPLICATION_MODAL);
@@ -251,7 +312,6 @@ public class ListaClientesController implements Initializable{
 
 			Scene clienteEditLayout = new Scene(clienteEditXML);
 			janelaClienteEditar.setScene(clienteEditLayout);
-
 			ClienteEditController clienteEditController = loader.getController();
 
 			clienteEditController.setJanelaClienteEdit(janelaClienteEditar);
@@ -272,10 +332,4 @@ public class ListaClientesController implements Initializable{
 		this.getStage().resizableProperty().setValue(Boolean.FALSE);
 	}
 
-	public List<Cliente> retornaListagemCliente() {
-		if (this.getClienteDAO() == null) {
-			this.setClienteDAO(new ClienteDAO());
-		}
-		return this.getClienteDAO().getAll();
-	}
 }

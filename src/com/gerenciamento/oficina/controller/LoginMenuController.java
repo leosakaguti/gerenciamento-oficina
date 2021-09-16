@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,10 +29,10 @@ import javafx.stage.WindowEvent;
 public class LoginMenuController implements Initializable{
 	
 	@FXML
-    private TextField fieldSenha;
-
-    @FXML
     private TextField fieldUsuario;
+	
+    @FXML
+    private PasswordField fieldSenha;
 
     @FXML
     private Label lblLogin;
@@ -174,7 +175,6 @@ public class LoginMenuController implements Initializable{
         this.setStage(new Stage());
         this.getStage().initModality(Modality.APPLICATION_MODAL);
         this.getStage().resizableProperty().setValue(Boolean.FALSE);
-        this.fieldUsuario.requestFocus();
     }
 	@Override
     public void initialize(URL location, ResourceBundle resources) {

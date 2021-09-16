@@ -6,7 +6,7 @@ public class Veiculo {
 	
 	private long codVeiculo;
 	
-	private Cliente cliente;
+	private Long codCliente;
 	
 	private String placaVeiculo;
 	
@@ -26,12 +26,12 @@ public class Veiculo {
 		this.codVeiculo = codVeiculo;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public Long getCodCliente() {
+		return codCliente;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setCodCliente(Long codCliente) {
+		this.codCliente = codCliente;
 	}
 
 	public String getPlacaVeiculo() {

@@ -14,11 +14,11 @@ public class Cliente {
 	
 	private String enderecoCliente;
 
-	public long getCodCliente() {
+	public Long getCodCliente() {
 		return codCliente;
 	}
 
-	public void setCodCliente(long codCliente) {
+	public void setCodCliente(Long codCliente) {
 		this.codCliente = codCliente;
 	}
 

@@ -102,7 +102,28 @@ public class MenuController implements Initializable{
 
     @FXML
     void onClickBtnVeiculo(ActionEvent event) {
+    	try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/VeiculoMenu.fxml"));
+			Parent veiculoListaXML = loader.load();
 
+			ListaVeiculosController listaVeiculosController = loader.getController();
+			Scene veiculoListaLayout = new Scene(veiculoListaXML);
+
+			this.getStage().setScene(veiculoListaLayout);
+			this.getStage().setTitle("Consulta de Veiculos");
+
+			this.getStage().setOnCloseRequest(e -> {
+				if (listaVeiculosController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
 	@Override

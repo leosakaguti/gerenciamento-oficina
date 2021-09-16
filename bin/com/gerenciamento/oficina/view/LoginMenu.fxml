@@ -2,14 +2,15 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.LoginMenuController">
    <children>
-      <TextField fx:id="fieldSenha" layoutX="60.0" layoutY="150.0" prefWidth="180.0" />
       <TextField fx:id="fieldUsuario" layoutX="60.0" layoutY="101.0" prefWidth="180.0" />
+      <PasswordField fx:id="fieldSenha" layoutX="60.0" layoutY="150.0" prefHeight="25.0" prefWidth="180.0" promptText="Sua senha" text="a" />
       <Label fx:id="lblLogin" layoutX="38.0" layoutY="30.0" text="Login">
          <font>
             <Font name="System Bold" size="16.0" />
