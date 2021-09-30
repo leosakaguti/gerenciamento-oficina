@@ -2,7 +2,6 @@ package com.gerenciamento.oficina.controller;
 
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +21,10 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -32,8 +34,8 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ListaVeiculosController implements Initializable{
@@ -47,13 +49,10 @@ public class ListaVeiculosController implements Initializable{
     private AnchorPane pnlCima;
 
     @FXML
-    private Label lblPlaca;
+    private Label lblPesquisar;
 
     @FXML
-    private TextField fieldPlaca;
-
-    @FXML
-    private Button btnFiltrarPlaca;
+    private TextField fieldPesquisar;
 
     @FXML
     private Button btnNovo;
@@ -71,10 +70,7 @@ public class ListaVeiculosController implements Initializable{
     private TableView<Veiculo> tbvVeiculos;
 
     @FXML
-    private TableColumn<Veiculo, Long> tbcCodVeic;
-
-    @FXML
-    private TableColumn<Veiculo, Long> tbcCodCliente;
+    private TableColumn<Veiculo, String> tbcCodVeic;
 
     @FXML
     private TableColumn<Veiculo, String> tbcNomeCliente;
@@ -83,16 +79,13 @@ public class ListaVeiculosController implements Initializable{
     private TableColumn<Veiculo, String> tbcPlaca;
 
     @FXML
-    private TableColumn<Veiculo, String> tbcModelo;
+    private TableColumn<Veiculo, String> tbcMarcaModelo;
 
     @FXML
     private TableColumn<Veiculo, String> tbcCor;
 
     @FXML
-    private TableColumn<Veiculo, Date> tbcAno;
-
-    @FXML
-    private TableColumn<Veiculo, String> tbcMarca;
+    private TableColumn<Veiculo, String> tbcAno;
     
     public static final String VEICULO_EDITAR = " - Editar";
     public static final String VEICULO_INCLUIR = " - Incluir";
@@ -211,14 +204,14 @@ public class ListaVeiculosController implements Initializable{
 	public void carregarTableViewVeiculos() {
 		ObservableList<Veiculo> results = FXCollections.observableArrayList();
 
-		tbcCodVeic.setCellValueFactory(new PropertyValueFactory<>("cod_veiculo"));
+		tbcCodVeic.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCodVeiculo().toString()));
+		tbcNomeCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNomeCliente()));
 		tbcPlaca.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPlacaVeiculo()));
         tbcCor.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCorVeiculo()));
-        tbcModelo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getModeloVeiculo()));
-        tbcAno.setCellValueFactory(new PropertyValueFactory<>("ano"));
-        tbcMarca.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getMarcaVeiculo()));
+        tbcMarcaModelo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getMarcaModeloVeiculo()));
+        tbcAno.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getAnoVeiculo().toString()));
 
-        String query = "SELECT cod_veiculo, cod_cliente, placa_carro, cor_carro, modelo_carro, ano FROM veiculo";
+        String query = "SELECT cod_veiculo, cod_cliente, placa_carro, cor_carro, marca_modelo, ano, nome_cliente  FROM veiculo";
 
         try {
             connection = new Conexao().getConnection();
@@ -231,9 +224,9 @@ public class ListaVeiculosController implements Initializable{
                 veiculos.setCodCliente(rs.getLong("cod_cliente"));
                 veiculos.setPlacaVeiculo(rs.getString("placa_carro"));
                 veiculos.setCorVeiculo(rs.getString("cor_carro"));
-                veiculos.setModeloVeiculo(rs.getString("modelo_carro"));
-                veiculos.setMarcaVeiculo(rs.getString("marca"));
-                veiculos.setAnoVeiculo(rs.getDate("ano"));
+                veiculos.setMarcaModeloVeiculo(rs.getString("marca_modelo"));
+                veiculos.setAnoVeiculo(rs.getLong("ano"));
+                veiculos.setNomeCliente(rs.getString("nome_cliente"));
 
                 results.add(veiculos);
             }
@@ -241,7 +234,7 @@ public class ListaVeiculosController implements Initializable{
 
             // Filtro de pesquisa
             FilteredList<Veiculo> veiculosFilteredList = new FilteredList<>(results, b -> true);
-            fieldPlaca.textProperty().addListener((observable, oldValue, newValue) -> {
+            fieldPesquisar.textProperty().addListener((observable, oldValue, newValue) -> {
                 veiculosFilteredList.setPredicate(veiculos -> {
                     if (newValue == null || newValue.isEmpty()) {
                         return true;
@@ -253,9 +246,9 @@ public class ListaVeiculosController implements Initializable{
                         return true;
                     } else if (veiculos.getCorVeiculo().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
-                    } else if (veiculos.getModeloVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    } else if (veiculos.getMarcaModeloVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
-                    } else if (veiculos.getMarcaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    } else if (veiculos.getNomeCliente().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
                     } else {
                         return false;
@@ -293,7 +286,7 @@ public class ListaVeiculosController implements Initializable{
 	}
 	
 	public boolean onShowTelaVeiculoEditar(Veiculo veiculo, String operacao) {
-		/*try {
+		try {
 			FXMLLoader loader = new FXMLLoader(
 					getClass().getResource("/com/gerenciamento/oficina/view/VeiculoEdit.fxml"));
 			Parent veiculoEditXML = loader.load();
@@ -317,7 +310,6 @@ public class ListaVeiculosController implements Initializable{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-*/
 		return false;
 	}
 	public boolean onCloseQuery() {

@@ -6,15 +6,15 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gerenciamento.oficina.entity.Cliente;
+import com.gerenciamento.oficina.entity.Usuario;
 
-public class ClienteDAO implements DAO<Cliente>{
+public class UsuarioDAO implements DAO<Usuario>{
 
 	@Override
-	public Cliente get(Long id) {
-		Cliente cliente = new Cliente();
-		String sql = "select * from cliente"
-				   + " where cod_cliente = ?";
+	public Usuario get(Long id) {
+		Usuario usuario = new Usuario();
+		String sql = "select * from usuario"
+				   + " where cod_usuario = ?";
 
 		Connection conexao = null;
 
@@ -31,14 +31,12 @@ public class ClienteDAO implements DAO<Cliente>{
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				cliente = new Cliente();
+				usuario = new Usuario();
 
-				cliente.setCodCliente(rset.getLong("cod_cliente"));
-				cliente.setNomeCliente(rset.getString("nome"));
-				cliente.setCpf(Long.parseLong(rset.getString("cpf_cnpj")));
-				cliente.setUnidadeFederativa(rset.getString("uf"));
-				cliente.setNumContato(rset.getString("num_contato"));
-				cliente.setEnderecoCliente(rset.getString("endereco"));
+				usuario.setCodUsuario(rset.getLong("cod_usuario"));
+				usuario.setUsuario(rset.getString("usuario"));
+				usuario.setNomeUsuario(rset.getString("nome"));
+				usuario.setIsAdmin((rset.getLong("is_admin")));
 			}
 
 		} catch (Exception e) {
@@ -57,14 +55,14 @@ public class ClienteDAO implements DAO<Cliente>{
 			}
 		}
 
-		return cliente;
+		return usuario;
 	}
 
 	@Override
-	public List<Cliente> getAll() {
-		List<Cliente> clientes = new ArrayList<Cliente>();
+	public List<Usuario> getAll() {
+		List<Usuario> usuarios = new ArrayList<Usuario>();
 
-		String sql = "select * from cliente";
+		String sql = "select * from usuario";
 
 		Connection conexao = null;
 
@@ -80,15 +78,13 @@ public class ClienteDAO implements DAO<Cliente>{
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				Cliente cliente = new Cliente();
+				Usuario usuario = new Usuario();
 
-				cliente.setCodCliente(rset.getLong("cod_cliente"));
-				cliente.setNomeCliente(rset.getString("nome"));
-				cliente.setCpf(Long.parseLong(rset.getString("cpf_cnpj")));
-				cliente.setUnidadeFederativa(rset.getString("uf"));
-				cliente.setNumContato(rset.getString("num_contato"));
-				cliente.setEnderecoCliente(rset.getString("endereco"));
-				clientes.add(cliente);
+				usuario.setCodUsuario(rset.getLong("cod_usuario"));
+				usuario.setUsuario(rset.getString("usuario"));
+				usuario.setNomeUsuario(rset.getString("nome"));
+				usuario.setIsAdmin((rset.getLong("is_admin")));
+				usuarios.add(usuario);
 			}
 
 		} catch (Exception e) {
@@ -106,12 +102,12 @@ public class ClienteDAO implements DAO<Cliente>{
 				e.printStackTrace();
 			}
 		}
-		return clientes;
+		return usuarios;
 	}
 
 	@Override
-	public int save(Cliente cliente) {
-		String sql = "insert into cliente (nome, cpf_cnpj, uf, num_contato, endereco)" + " values (?,?,?,?,?)";
+	public int save(Usuario usuario) {
+		String sql = "insert into usuario (usuario, senha, nome, is_admin)" + " values (?,SHA2(?,256),?,?)";
 
 		Connection conexao = null;
 
@@ -123,11 +119,10 @@ public class ClienteDAO implements DAO<Cliente>{
 
 			stm = conexao.prepareStatement(sql);
 
-			stm.setString(1, cliente.getNomeCliente());
-			stm.setLong(2, cliente.getCpf());
-			stm.setString(3, cliente.getUnidadeFederativa());
-			stm.setString(4, cliente.getNumContato());
-			stm.setString(5, cliente.getEnderecoCliente());
+			stm.setString(1, usuario.getUsuario());
+			stm.setString(2, usuario.getSenhaUsuario());
+			stm.setString(3, usuario.getNomeUsuario());
+			stm.setLong(4, usuario.getIsAdmin());
 			
 			stm.execute();
 
@@ -151,9 +146,9 @@ public class ClienteDAO implements DAO<Cliente>{
 	}
 
 	@Override
-	public boolean update(Cliente cliente, String[] params) {
-		String sql = "update cliente set nome=?, cpf_cnpj=?, uf=?, num_contato=?, endereco=?"
-				   + " where cod_cliente = ?";
+	public boolean update(Usuario usuario, String[] params) {
+		String sql = "update usuario set usuario=?, senha=SHA2(?,256), nome=?, is_admin=?"
+				   + " where cod_usuario = ?";
 
 		Connection conexao = null;
 
@@ -163,12 +158,11 @@ public class ClienteDAO implements DAO<Cliente>{
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setString(1, cliente.getNomeCliente());
-			stm.setLong(2, cliente.getCpf());
-			stm.setString(3, cliente.getUnidadeFederativa());
-			stm.setString(4, cliente.getNumContato());
-			stm.setString(5, cliente.getEnderecoCliente());
-			stm.setLong(6, cliente.getCodCliente());
+			stm.setString(1, usuario.getUsuario());
+			stm.setString(2, usuario.getSenhaUsuario());
+			stm.setString(3, usuario.getNomeUsuario());
+			stm.setLong(4, usuario.getIsAdmin());
+			stm.setLong(5, usuario.getCodUsuario());
 
 			stm.execute();
 
@@ -192,8 +186,8 @@ public class ClienteDAO implements DAO<Cliente>{
 	}
 
 	@Override
-	public boolean delete(Cliente cliente) {
-		String sql = "delete from cliente where cod_cliente = ?";
+	public boolean delete(Usuario usuario) {
+		String sql = "delete from usuario where cod_usuario = ?";
 
 		Connection conexao = null;
 
@@ -203,7 +197,7 @@ public class ClienteDAO implements DAO<Cliente>{
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setLong(1, cliente.getCodCliente());
+			stm.setLong(1, usuario.getCodUsuario());
 			stm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();

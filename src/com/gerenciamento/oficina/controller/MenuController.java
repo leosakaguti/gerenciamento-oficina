@@ -1,7 +1,14 @@
 package com.gerenciamento.oficina.controller;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ResourceBundle;
+
+import com.gerenciamento.oficina.dao.Conexao;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +51,22 @@ public class MenuController implements Initializable{
     @FXML
     private Button btnUsuarios;
     
+    @FXML
+    private Label lblUsuarioLogado;
+
+    @FXML
+    private Label lblUsuarioLogadoValue;
+    
     private Stage stage;
+    
+    private String usuario = System.getProperty("usuario");
+    
+    private Long isAdmin;
+    
+    Connection connection = null;
+    Statement statement = null;
+    PreparedStatement preparedStatement = null;
+    ResultSet rs = null;
 
 	public Stage getStage() {
 		return stage;
@@ -97,7 +119,28 @@ public class MenuController implements Initializable{
     
     @FXML
     void onClickBtnUsuarios(ActionEvent event) {
+    	try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/UsuarioMenu.fxml"));
+			Parent usuarioListaXML = loader.load();
 
+			ListaUsuariosController listaUsuarioController = loader.getController();
+			Scene usuarioListaLayout = new Scene(usuarioListaXML);
+
+			this.getStage().setScene(usuarioListaLayout);
+			this.getStage().setTitle("Consulta de Usuários");
+
+			this.getStage().setOnCloseRequest(e -> {
+				if (listaUsuarioController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     @FXML
@@ -128,7 +171,32 @@ public class MenuController implements Initializable{
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.configuraStage();		
+		this.configuraStage();
+		this.lblUsuarioLogadoValue.setText(System.getProperty("nomeLogado"));
+		
+		String query = "select is_admin from usuario "
+					+ "where usuario = ?";
+		try {
+            connection = new Conexao().getConnection();
+            preparedStatement = connection.prepareStatement(query);
+            
+            preparedStatement.setString(1, usuario);
+            rs = preparedStatement.executeQuery();
+            
+            if(rs.next()) {
+            	isAdmin = rs.getLong("is_admin");
+            }
+            
+            if(isAdmin == 1) {
+            	btnUsuarios.setVisible(true);
+            }else btnUsuarios.setVisible(false);
+		}catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+				
+		
 	}
 	
 	public void configuraStage() {

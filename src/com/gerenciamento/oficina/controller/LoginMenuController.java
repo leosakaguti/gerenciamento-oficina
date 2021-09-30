@@ -46,15 +46,8 @@ public class LoginMenuController implements Initializable{
     @FXML
     private Button btnLogin;
     
-    @FXML
-    private Button btnCancelar;
-    
     private Stage stage;
-	
-    @FXML
-    void onClickBtnCancelar(ActionEvent event) {
-        System.exit(0);
-    }
+
     @FXML
     void onClickBtnLogin(ActionEvent event) throws SQLException {
     	String user = fieldUsuario.getText();
@@ -74,7 +67,7 @@ public class LoginMenuController implements Initializable{
     		PreparedStatement stm1 = null;
     		ResultSet rs1 = null;
     		
-    		String sql1 = "select cod_usuario from usuario"
+    		String sql1 = "select cod_usuario, nome from usuario"
 		   				+ "	where usuario = ?"
 		   				+ "   and senha = SHA2(?, 256)";
     		
@@ -92,7 +85,8 @@ public class LoginMenuController implements Initializable{
 		    		PreparedStatement stm2 = null;
 		    		
 		    		System.setProperty("usuario", user);
-		    		System.out.println(System.getProperty("usuario"));
+		    		System.setProperty("nomeLogado", rs1.getString("nome"));
+		    		
 		    		String sql2 = "update usuario set logado = 1 "
 		    					+ "where usuario = ?";
 		    		

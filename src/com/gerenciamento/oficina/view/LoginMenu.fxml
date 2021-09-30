@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.LoginMenuController">
+<AnchorPane prefHeight="300.0" prefWidth="300.0" stylesheets="@menu.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.LoginMenuController">
    <children>
       <TextField fx:id="fieldUsuario" layoutX="60.0" layoutY="101.0" prefWidth="180.0" promptText="Digite seu usuário" />
       <PasswordField fx:id="fieldSenha" layoutX="60.0" layoutY="150.0" prefHeight="25.0" prefWidth="180.0" promptText="Digite sua senha" />
@@ -18,7 +18,6 @@
       </Label>
       <Label fx:id="lblUsuario" layoutX="60.0" layoutY="84.0" text="Usuário:" />
       <Label fx:id="lblSenha" layoutX="60.0" layoutY="133.0" prefWidth="41.0" text="Senha:" />
-      <Button fx:id="btnLogin" layoutX="170.0" layoutY="184.0" mnemonicParsing="false" onAction="#onClickBtnLogin" prefWidth="70.0" text="Login" />
-      <Button fx:id="btnCancelar" layoutX="60.0" layoutY="184.0" mnemonicParsing="false" onAction="#onClickBtnCancelar" prefWidth="70.0" text="Cancelar" />
+      <Button fx:id="btnLogin" layoutX="60.0" layoutY="184.0" mnemonicParsing="false" onAction="#onClickBtnLogin" prefHeight="25.0" prefWidth="180.0" text="Login" />
    </children>
 </AnchorPane>

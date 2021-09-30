@@ -1,28 +1,44 @@
 package com.gerenciamento.oficina.entity;
 
-import java.sql.Date;
-
 public class Veiculo {
 	
-	private long codVeiculo;
+	private Long codVeiculo;
 	
 	private Long codCliente;
+	
+	private Cliente cliente;
 	
 	private String placaVeiculo;
 	
 	private String corVeiculo;
 	
-	private String modeloVeiculo;
+	private String marcaModeloVeiculo;
 	
-	private Date anoVeiculo;
+	private String nomeCliente;
 	
-	private String marcaVeiculo;
+	private Long anoVeiculo;
+	
+	public String getNomeCliente() {
+		return nomeCliente;
+	}
 
-	public long getCodVeiculo() {
+	public void setNomeCliente(String nomeCliente) {
+		this.nomeCliente = nomeCliente;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Long getCodVeiculo() {
 		return codVeiculo;
 	}
 
-	public void setCodVeiculo(long codVeiculo) {
+	public void setCodVeiculo(Long codVeiculo) {
 		this.codVeiculo = codVeiculo;
 	}
 
@@ -50,28 +66,20 @@ public class Veiculo {
 		this.corVeiculo = corVeiculo;
 	}
 
-	public String getModeloVeiculo() {
-		return modeloVeiculo;
+	public String getMarcaModeloVeiculo() {
+		return marcaModeloVeiculo;
 	}
 
-	public void setModeloVeiculo(String modeloVeiculo) {
-		this.modeloVeiculo = modeloVeiculo;
+	public void setMarcaModeloVeiculo(String marcaModeloVeiculo) {
+		this.marcaModeloVeiculo = marcaModeloVeiculo;
 	}
 
-	public Date getAnoVeiculo() {
+	public Long getAnoVeiculo() {
 		return anoVeiculo;
 	}
 
-	public void setAnoVeiculo(Date anoVeiculo) {
+	public void setAnoVeiculo(Long anoVeiculo) {
 		this.anoVeiculo = anoVeiculo;
-	}
-
-	public String getMarcaVeiculo() {
-		return marcaVeiculo;
-	}
-
-	public void setMarcaVeiculo(String marcaVeiculo) {
-		this.marcaVeiculo = marcaVeiculo;
 	}
 	
 }

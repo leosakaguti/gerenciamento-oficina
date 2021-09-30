@@ -43,9 +43,8 @@ public class VeiculoDAO implements DAO<Veiculo>{
 				veiculo.setCliente(this.clienteDAO.get(rset.getLong("cod_cliente")));
 				veiculo.setPlacaVeiculo(rset.getString("placa_carro"));
 				veiculo.setCorVeiculo(rset.getString("cor_carro"));
-				veiculo.setModeloVeiculo(rset.getString("modelo_carro"));
-				veiculo.setAnoVeiculo(rset.getDate("ano"));
-				veiculo.setMarcaVeiculo(rset.getString("marca"));
+				veiculo.setMarcaModeloVeiculo(rset.getString("marca_modelo"));
+				veiculo.setAnoVeiculo(rset.getLong("ano"));
 			}
 
 		} catch (Exception e) {
@@ -93,9 +92,8 @@ public class VeiculoDAO implements DAO<Veiculo>{
 				veiculo.setCliente(this.clienteDAO.get(rset.getLong("cod_cliente")));
 				veiculo.setPlacaVeiculo(rset.getString("placa_carro"));
 				veiculo.setCorVeiculo(rset.getString("cor_carro"));
-				veiculo.setModeloVeiculo(rset.getString("modelo_carro"));
-				veiculo.setAnoVeiculo(rset.getDate("ano"));
-				veiculo.setMarcaVeiculo(rset.getString("marca"));
+				veiculo.setMarcaModeloVeiculo(rset.getString("marca_modelo"));
+				veiculo.setAnoVeiculo(rset.getLong("ano"));
 				veiculos.add(veiculo);
 			}
 
@@ -119,7 +117,7 @@ public class VeiculoDAO implements DAO<Veiculo>{
 
 	@Override
 	public int save(Veiculo veiculo) {
-		String sql = "insert into veiculo (cod_veiculo, cod_cliente, placa_carro, cor_carro, modelo_carro, ano, marca)" + " values (?,?,?,?,?,?,?)";
+		String sql = "insert into veiculo ( cod_cliente, placa_carro, cor_carro, marca_modelo, ano, nome_cliente)" + " values (?,?,?,?,?,?)";
 
 		Connection conexao = null;
 
@@ -131,13 +129,12 @@ public class VeiculoDAO implements DAO<Veiculo>{
 
 			stm = conexao.prepareStatement(sql);
 
-			stm.setLong(1, veiculo.getCodVeiculo());
-			stm.setLong(2, veiculo.getCliente().getCodCliente());
-			stm.setString(3, veiculo.getPlacaVeiculo());
-			stm.setString(4, veiculo.getCorVeiculo());
-			stm.setString(5, veiculo.getModeloVeiculo());
-			stm.setDate(6, veiculo.getAnoVeiculo());
-			stm.setString(7, veiculo.getMarcaVeiculo());
+			stm.setLong(1, veiculo.getCliente().getCodCliente());
+			stm.setString(2, veiculo.getPlacaVeiculo());
+			stm.setString(3, veiculo.getCorVeiculo());
+			stm.setString(4, veiculo.getMarcaModeloVeiculo());
+			stm.setLong(5, veiculo.getAnoVeiculo());
+			stm.setString(6, veiculo.getCliente().getNomeCliente());
 			
 			stm.execute();
 
@@ -162,8 +159,8 @@ public class VeiculoDAO implements DAO<Veiculo>{
 
 	@Override
 	public boolean update(Veiculo veiculo, String[] params) {
-		String sql = "update veiculo set cod_veiculo = ?, cod_cliente = ?, placa_carro = ?, "
-				   + "cor_carro = ?, modelo_carro = ?, ano = ?, marca = ? where cod_veiculo = ?";
+		String sql = "update veiculo set cod_cliente = ?, placa_carro = ?, "
+				   + "cor_carro = ?, marca_modelo = ?, ano = ?, nome_cliente = ? where cod_veiculo = ?";
 
 		Connection conexao = null;
 
@@ -173,14 +170,13 @@ public class VeiculoDAO implements DAO<Veiculo>{
 			conexao = new Conexao().getConnection();
 
 			stm = conexao.prepareStatement(sql);
-			stm.setLong(1, veiculo.getCodVeiculo());
-			stm.setLong(2, veiculo.getCliente().getCodCliente());
-			stm.setString(3, veiculo.getPlacaVeiculo());
-			stm.setString(4, veiculo.getCorVeiculo());
-			stm.setString(5, veiculo.getModeloVeiculo());
-			stm.setDate(6, veiculo.getAnoVeiculo());
-			stm.setString(7, veiculo.getMarcaVeiculo());
-			stm.setLong(8, veiculo.getCodVeiculo());
+			stm.setLong(1, veiculo.getCliente().getCodCliente());
+			stm.setString(2, veiculo.getPlacaVeiculo());
+			stm.setString(3, veiculo.getCorVeiculo());
+			stm.setString(4, veiculo.getMarcaModeloVeiculo());
+			stm.setLong(5, veiculo.getAnoVeiculo());
+			stm.setString(6, veiculo.getCliente().getNomeCliente());
+			stm.setLong(7, veiculo.getCodVeiculo());
 
 			stm.execute();
 

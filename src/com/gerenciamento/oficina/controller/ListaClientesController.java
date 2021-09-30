@@ -51,10 +51,10 @@ public class ListaClientesController implements Initializable{
     private AnchorPane pnlCima;
 
     @FXML
-    private Label lblCPF;
+    private Label lblPesquisar;
 
     @FXML
-    private TextField fieldCPF;
+    private TextField fieldPesquisar;
 
     @FXML
     private Button btnNovo;
@@ -131,7 +131,7 @@ public class ListaClientesController implements Initializable{
 
 			Alert alerta = new Alert(AlertType.CONFIRMATION);
 			alerta.setTitle("Pergunta");
-			alerta.setHeaderText("Confirma a exclusão do cliente " + cliente.getNomeCliente() + " ?");
+			alerta.setHeaderText("Confirma a exclusão do cliente " + cliente.getNomeCliente() + "?");
 
 			ButtonType botaoNao = ButtonType.NO;
 			ButtonType botaoSim = ButtonType.YES;
@@ -236,7 +236,7 @@ public class ListaClientesController implements Initializable{
 
             // Filtro de pesquisa
             FilteredList<Cliente> clientesFilteredList = new FilteredList<>(results, b -> true);
-            fieldCPF.textProperty().addListener((observable, oldValue, newValue) -> {
+            fieldPesquisar.textProperty().addListener((observable, oldValue, newValue) -> {
                 clientesFilteredList.setPredicate(clientes -> {
                     if (newValue == null || newValue.isEmpty()) {
                         return true;

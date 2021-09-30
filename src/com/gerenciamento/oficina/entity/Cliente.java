@@ -2,7 +2,7 @@ package com.gerenciamento.oficina.entity;
 
 public class Cliente {
 	
-	private long codCliente;
+	private Long codCliente;
 	
 	private Long cpf;
 	

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="369.0" prefWidth="523.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+   <children>
+      <TableView fx:id="tbvServicos" layoutX="205.0" prefHeight="369.0" prefWidth="318.0">
+        <columns>
+          <TableColumn fx:id="tbcCodServico" prefWidth="75.0" text="Cod" />
+          <TableColumn fx:id="tbcServico" prefWidth="143.0" text="Servico" />
+            <TableColumn fx:id="tbcValorServico" prefWidth="99.0" text="Valor Servico" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="cbxServicos" layoutX="26.0" layoutY="33.0" prefWidth="150.0" />
+      <Label fx:id="lblServicos" layoutX="26.0" layoutY="15.0" text="Servicos:" />
+      <Button fx:id="btnAdicionar" layoutX="109.0" layoutY="66.0" mnemonicParsing="false" text="Adicionar" />
+      <Button fx:id="btnRemover" layoutX="26.0" layoutY="66.0" mnemonicParsing="false" text="Remover" />
+      <Button fx:id="btnVoltar" layoutX="14.0" layoutY="330.0" mnemonicParsing="false" onAction="#onClickBtnVoltar" text="Voltar" />
+   </children>
+</AnchorPane>
