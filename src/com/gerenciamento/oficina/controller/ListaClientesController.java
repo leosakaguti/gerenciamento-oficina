@@ -34,7 +34,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -72,13 +71,13 @@ public class ListaClientesController implements Initializable{
     private TableView<Cliente> tbvClientes;
 
     @FXML
-    private TableColumn<Cliente, Long> tbcCodCliente;
+    private TableColumn<Cliente, String> tbcCodCliente;
 
     @FXML
     private TableColumn<Cliente, String> tbcNomeCliente;
 
     @FXML
-    private TableColumn<Cliente, Long> tbcCPF;
+    private TableColumn<Cliente, String> tbcCPF;
 
     @FXML
     private TableColumn<Cliente, String> tbcUF;
@@ -207,9 +206,9 @@ public class ListaClientesController implements Initializable{
 	public void carregarTableViewClientes() {
 		ObservableList<Cliente> results = FXCollections.observableArrayList();
 
-		tbcCodCliente.setCellValueFactory(new PropertyValueFactory<>("cod_cliente"));
+		tbcCodCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCodCliente().toString()));
 		tbcNomeCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNomeCliente()));
-		tbcCPF.setCellValueFactory(new PropertyValueFactory<>("cpf_cnpj"));
+		tbcCPF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCpf().toString()));
         tbcUF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUnidadeFederativa()));
         tbcContato.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNumContato()));
         tbcEndereco.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getEnderecoCliente()));
