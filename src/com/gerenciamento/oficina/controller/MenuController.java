@@ -40,7 +40,7 @@ public class MenuController implements Initializable{
     private Button btnCliente;
 
     @FXML
-    private Button btnFornecedor;
+    private Button btnServico;
 
     @FXML
     private Button btnProduto;
@@ -103,7 +103,7 @@ public class MenuController implements Initializable{
     }
 
     @FXML
-    void onClickBtnFornecedor(ActionEvent event) {
+    void onClickBtnServico(ActionEvent event) {
 
     }
 
