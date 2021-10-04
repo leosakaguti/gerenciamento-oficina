@@ -102,7 +102,6 @@ public class ListaUsuariosController implements Initializable{
     @FXML
     void onClickBtnEditar(ActionEvent event) {
     	Usuario usuario = this.tbvUsuarios.getSelectionModel().getSelectedItem();
-
 		if (usuario != null) {
 			boolean btnConfirmarClick = this.onShowTelaUsuarioEditar(usuario, ListaUsuariosController.USUARIO_EDITAR);
 
@@ -131,9 +130,6 @@ public class ListaUsuariosController implements Initializable{
 			alerta.getButtonTypes().setAll(botaoSim, botaoNao);
 			Optional<ButtonType> resultado = alerta.showAndWait();
 			
-			System.out.println(usuario.getUsuario());
-			System.out.println(System.getProperty("usuario"));
-			
 			if (!usuario.getUsuario().equals(System.getProperty("usuario")) && resultado.get() == botaoSim) {
 				this.getUsuarioDAO().delete(usuario);
 				this.carregarTableViewUsuarios();
@@ -153,7 +149,6 @@ public class ListaUsuariosController implements Initializable{
     @FXML
     void onClickBtnNovo(ActionEvent event) {
     	Usuario usuario = new Usuario();
-
 		boolean btnConfirmarClick = this.onShowTelaUsuarioEditar(usuario, ListaUsuariosController.USUARIO_INCLUIR);
 
 		if (btnConfirmarClick) {
@@ -161,7 +156,7 @@ public class ListaUsuariosController implements Initializable{
 			this.carregarTableViewUsuarios();
 		}
     }
-    
+
 	public List<Usuario> getListaUsuarios() {
 		return listaUsuarios;
 	}
@@ -306,14 +301,14 @@ public class ListaUsuariosController implements Initializable{
 			janelaUsuarioEditar.setTitle("Usuário" + operacao);
 			janelaUsuarioEditar.initModality(Modality.APPLICATION_MODAL);
 			janelaUsuarioEditar.resizableProperty().setValue(Boolean.FALSE);
-
+			
+			System.setProperty("operacao", operacao);
 			Scene usuarioEditLayout = new Scene(usuarioEditXML);
 			janelaUsuarioEditar.setScene(usuarioEditLayout);
 			UsuarioEditController usuarioEditController = loader.getController();
 
 			usuarioEditController.setJanelaUsuarioEdit(janelaUsuarioEditar);
 			usuarioEditController.populaTela(usuario);
-
 			janelaUsuarioEditar.showAndWait();
 
 			return usuarioEditController.isOkClick();
