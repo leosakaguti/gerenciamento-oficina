@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pnlPrincipal" prefHeight="339.0" prefWidth="248.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.MenuController">
+<AnchorPane fx:id="pnlPrincipal" prefHeight="339.0" prefWidth="248.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.MenuController">
    <children>
       <Label fx:id="lblNomeSistema" layoutX="35.0" layoutY="26.0" text="FastMechanic" />
       <GridPane fx:id="pnlBotoes" layoutX="65.0" layoutY="50.0" prefHeight="253.0" prefWidth="120.0">
@@ -26,7 +26,7 @@
          <children>
             <Button fx:id="btnVeiculo" mnemonicParsing="false" onAction="#onClickBtnVeiculo" prefWidth="120.0" text="Veículo" />
             <Button fx:id="btnCliente" mnemonicParsing="false" onAction="#onClickBtnCliente" prefWidth="120.0" text="Cliente" GridPane.rowIndex="1" />
-            <Button fx:id="btnFornecedor" mnemonicParsing="false" onAction="#onClickBtnFornecedor" prefWidth="120.0" text="Fornecedor" GridPane.rowIndex="2" />
+            <Button fx:id="btnServico" mnemonicParsing="false" onAction="#onClickBtnServico" prefWidth="120.0" text="Serviço" GridPane.rowIndex="2" />
             <Button fx:id="btnProduto" mnemonicParsing="false" onAction="#onClickBtnProduto" prefWidth="120.0" text="Produto" GridPane.rowIndex="3" />
             <Button fx:id="btnOrdem" mnemonicParsing="false" onAction="#onClickBtnOrdem" prefWidth="120.0" text="Ordem de Serviço" GridPane.rowIndex="4" />
             <Button fx:id="btnUsuarios" mnemonicParsing="false" onAction="#onClickBtnUsuarios" prefWidth="120.0" text="Usuários" GridPane.rowIndex="5" />
