@@ -109,12 +109,54 @@ public class MenuController implements Initializable{
 
     @FXML
     void onClickBtnOrdem(ActionEvent event) {
+    	try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/OrdemServicoMenu.fxml"));
+			Parent ordemListaXML = loader.load();
 
+			ListaOrdensController listaOrdemController = loader.getController();
+			Scene ordemListaLayout = new Scene(ordemListaXML);
+
+			this.getStage().setScene(ordemListaLayout);
+			this.getStage().setTitle("Consulta de Ordens de Serviço");
+
+			this.getStage().setOnCloseRequest(e -> {
+				if (listaOrdemController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     @FXML
     void onClickBtnProduto(ActionEvent event) {
-    
+    	try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/ProdutoMenu.fxml"));
+			Parent produtoListaXML = loader.load();
+
+			ListaProdutosController listaProdutoController = loader.getController();
+			Scene produtoListaLayout = new Scene(produtoListaXML);
+
+			this.getStage().setScene(produtoListaLayout);
+			this.getStage().setTitle("Consulta de Produtos");
+
+			this.getStage().setOnCloseRequest(e -> {
+				if (listaProdutoController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
     
     @FXML
