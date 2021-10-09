@@ -147,7 +147,7 @@ public class UsuarioDAO implements DAO<Usuario>{
 
 	@Override
 	public boolean update(Usuario usuario, String[] params) {
-		String sql = "update usuario set usuario=?, senha=SHA2(?,256), nome=?, is_admin=?"
+		String sql = "update usuario set usuario=?, nome=?, is_admin=?"
 				   + " where cod_usuario = ?";
 
 		Connection conexao = null;
@@ -159,10 +159,9 @@ public class UsuarioDAO implements DAO<Usuario>{
 
 			stm = conexao.prepareStatement(sql);
 			stm.setString(1, usuario.getUsuario());
-			stm.setString(2, usuario.getSenhaUsuario());
-			stm.setString(3, usuario.getNomeUsuario());
-			stm.setLong(4, usuario.getIsAdmin());
-			stm.setLong(5, usuario.getCodUsuario());
+			stm.setString(2, usuario.getNomeUsuario());
+			stm.setLong(3, usuario.getIsAdmin());
+			stm.setLong(4, usuario.getCodUsuario());
 
 			stm.execute();
 
@@ -184,7 +183,42 @@ public class UsuarioDAO implements DAO<Usuario>{
 		}
 		return false;
 	}
+	
+	public boolean updateSenha(Usuario usuario, String[] params) {
+		String sql = "update usuario set senha=SHA2(?,256) "
+				   + "where cod_usuario = ?";
 
+		Connection conexao = null;
+
+		PreparedStatement stm = null;
+
+		try {
+			conexao = new Conexao().getConnection();
+
+			stm = conexao.prepareStatement(sql);
+			stm.setString(1, usuario.getSenhaUsuario());
+			stm.setLong(2, usuario.getCodUsuario());
+
+			stm.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+				}
+
+				if (conexao != null) {
+					conexao.close();
+				}
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 	@Override
 	public boolean delete(Usuario usuario) {
 		String sql = "delete from usuario where cod_usuario = ?";
