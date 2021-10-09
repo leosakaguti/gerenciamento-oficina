@@ -2,17 +2,17 @@ package com.gerenciamento.oficina.entity;
 
 public class Usuario {
 	
-	public Long codUsuario;
+	private Long codUsuario;
 	
-	public String usuario;
+	private String usuario;
 	
-	public String nomeUsuario;
+	private String nomeUsuario;
 	
-	public String senhaUsuario;
+	private String senhaUsuario;
 	
-	public Long isAdmin;
+	private Long isAdmin;
 	
-	public Long isLogado;
+	private Long isLogado;
 
 	public Long getCodUsuario() {
 		return codUsuario;
