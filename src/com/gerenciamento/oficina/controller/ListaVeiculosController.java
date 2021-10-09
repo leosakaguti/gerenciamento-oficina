@@ -244,7 +244,7 @@ public class ListaVeiculosController implements Initializable{
 
                     if (veiculos.getPlacaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
-                    } else if (veiculos.getCorVeiculo().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    } else if (veiculos.getCorVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
                     } else if (veiculos.getMarcaModeloVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
