@@ -7,30 +7,32 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane fx:id="pnlPrincipal" prefHeight="350.0" prefWidth="592.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+<AnchorPane fx:id="pnlPrincipal" prefHeight="350.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ListaOrdensController">
    <children>
-      <TableView fx:id="tbvOrdens" prefHeight="350.0" prefWidth="254.0">
+      <TableView fx:id="tbvOrdens" prefHeight="350.0" prefWidth="304.0">
         <columns>
           <TableColumn fx:id="tbcCodOrdem" prefWidth="56.0" text="Cod" />
           <TableColumn fx:id="tbcPlacaVeic" prefWidth="102.0" text="Placa veiculo" />
             <TableColumn fx:id="tbcDataEmis" prefWidth="95.0" text="Data Emissao" />
+            <TableColumn fx:id="tbcStatusOrdem" prefWidth="50.0" text="Status" />
         </columns>
       </TableView>
-      <Label fx:id="lblCodOrdem" layoutX="268.0" layoutY="65.0" text="Cod Ordem:" />
-      <Label fx:id="lblPlacaVeic" layoutX="268.0" layoutY="93.0" text="Placa Veiculo:" />
-      <Label fx:id="lblCliente" layoutX="268.0" layoutY="120.0" text="Cliente:" />
+      <Label fx:id="lblCodOrdem" layoutX="310.0" layoutY="69.0" text="Cod Ordem:" />
+      <Label fx:id="lblPlacaVeic" layoutX="310.0" layoutY="97.0" text="Placa Veiculo:" />
+      <Label fx:id="lblCliente" layoutX="310.0" layoutY="123.0" text="Cliente:" />
       <Button fx:id="btnGerarRelatorio" layoutX="483.0" layoutY="271.0" mnemonicParsing="false" onAction="#onClickBtnGerar" text="Gerar Relatório" />
       <Button fx:id="btnNovo" layoutX="341.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnNovo" text="Novo" />
-      <TextField fx:id="fieldPesquisar" layoutX="268.0" layoutY="23.0" prefHeight="25.0" prefWidth="97.0" />
-      <Label fx:id="lblPesquisar" layoutX="268.0" layoutY="6.0" text="Pesquisar:" />
+      <TextField fx:id="fieldPesquisar" layoutX="310.0" layoutY="27.0" prefHeight="25.0" prefWidth="97.0" />
+      <Label fx:id="lblPesquisar" layoutX="310.0" layoutY="10.0" text="Pesquisar:" />
       <Button fx:id="btnExcluir" layoutX="392.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnExcluir" text="Excluir" />
-      <Label fx:id="lblDataEmis" layoutX="268.0" layoutY="149.0" text="Data Emissão:" />
+      <Label fx:id="lblDataEmis" layoutX="310.0" layoutY="149.0" text="Data Emissão:" />
       <Button fx:id="btnServicos" layoutX="448.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnServicos" text="Servicos" />
       <Button fx:id="btnProdutos" layoutX="515.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnProdutos" text="Produtos" />
-      <Label fx:id="lblCodOrdemValue" layoutX="336.0" layoutY="65.0" />
-      <Label fx:id="lblPlacaVeicValue" layoutX="344.0" layoutY="93.0" />
-      <Label fx:id="lblClienteValue" layoutX="310.0" layoutY="120.0" />
-      <Label fx:id="lblDataEmisValue" layoutX="345.0" layoutY="149.0" />
+      <Label fx:id="lblCodOrdemValue" layoutX="378.0" layoutY="70.0" />
+      <Label fx:id="lblPlacaVeicValue" layoutX="386.0" layoutY="97.0" />
+      <Label fx:id="lblClienteValue" layoutX="354.0" layoutY="124.0" />
+      <Label fx:id="lblDataEmisValue" layoutX="387.0" layoutY="147.0" />
+      <Label fx:id="lblValorTotal" layoutX="310.0" layoutY="176.0" text="Valor Total:" />
+      <Label fx:id="lblValorTotalValue" layoutX="373.0" layoutY="176.0" />
    </children>
 </AnchorPane>
