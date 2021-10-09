@@ -98,7 +98,11 @@ public class UsuarioEditController implements Initializable{
 	public void setJanelaUsuarioEdit(Stage janelaUsuarioEdit) {
 		this.janelaUsuarioEdit = janelaUsuarioEdit;
 	}
-
+	
+	public void setUsuarioTelaCadastro(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 	public void populaTela(Usuario usuario) {
 		this.usuario = usuario;
 
@@ -181,6 +185,13 @@ public class UsuarioEditController implements Initializable{
 			alerta.showAndWait();
 
 			return false;
+		}
+	}
+	
+	public void verificaOperacao(String operacao) {
+		if(operacao.equals(" - Editar")){
+			fieldSenha.setEditable(false);
+			fieldSenha.setDisable(true);
 		}
 	}
 	
