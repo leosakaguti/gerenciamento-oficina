@@ -41,6 +41,9 @@ import javafx.stage.Stage;
 public class ListaUsuariosController implements Initializable{
 	
 	@FXML
+    private Button btnAlterarSenha;
+	
+	@FXML
     private Button btnEditar;
 
     @FXML
@@ -98,7 +101,23 @@ public class ListaUsuariosController implements Initializable{
     Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet rs = null;
-
+    
+    @FXML
+    void onClickBtnAlterarSenha(ActionEvent event) {
+    	Usuario usuario = this.tbvUsuarios.getSelectionModel().getSelectedItem();
+		if (usuario != null) {
+			boolean btnConfirmarClick = this.onShowTelaUsuarioEditarSenha(usuario);
+			
+			if (btnConfirmarClick) {
+				this.getUsuarioDAO().updateSenha(usuario, null);
+				this.carregarTableViewUsuarios();
+			}
+		} else {
+			Alert alerta = new Alert(AlertType.ERROR);
+			alerta.setContentText("Por favor, escolha um usuário na lista para alterar a senha!");
+		}
+    }
+    
     @FXML
     void onClickBtnEditar(ActionEvent event) {
     	Usuario usuario = this.tbvUsuarios.getSelectionModel().getSelectedItem();
@@ -275,9 +294,11 @@ public class ListaUsuariosController implements Initializable{
 		if (usuario != null) {
 			this.btnEditar.setDisable(false);
 			this.btnExcluir.setDisable(false);
+			this.btnAlterarSenha.setDisable(false);
 		} else {
 			this.btnEditar.setDisable(true);
 			this.btnExcluir.setDisable(true);
+			this.btnAlterarSenha.setDisable(true);
 		}
 	}
 	
@@ -301,14 +322,18 @@ public class ListaUsuariosController implements Initializable{
 			janelaUsuarioEditar.setTitle("Usuário" + operacao);
 			janelaUsuarioEditar.initModality(Modality.APPLICATION_MODAL);
 			janelaUsuarioEditar.resizableProperty().setValue(Boolean.FALSE);
-			
-			System.setProperty("operacao", operacao);
+
 			Scene usuarioEditLayout = new Scene(usuarioEditXML);
 			janelaUsuarioEditar.setScene(usuarioEditLayout);
 			UsuarioEditController usuarioEditController = loader.getController();
 
 			usuarioEditController.setJanelaUsuarioEdit(janelaUsuarioEditar);
-			usuarioEditController.populaTela(usuario);
+			if(operacao.equals(" - Editar")) {
+				usuarioEditController.populaTela(usuario);
+				usuarioEditController.verificaOperacao(operacao);
+			}else {
+				usuarioEditController.setUsuarioTelaCadastro(usuario);
+			}
 			janelaUsuarioEditar.showAndWait();
 
 			return usuarioEditController.isOkClick();
@@ -317,7 +342,31 @@ public class ListaUsuariosController implements Initializable{
 		}
 		return false;
 	}
+	
+	public boolean onShowTelaUsuarioEditarSenha(Usuario usuario) {
+		try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/UsuarioEditSenha.fxml"));
+			Parent usuarioEditSenhaXML = loader.load();
+			Stage janelaUsuarioEditSenha = new Stage();
+			janelaUsuarioEditSenha.setTitle("Usuário - Alterar Senha");
+			janelaUsuarioEditSenha.initModality(Modality.APPLICATION_MODAL);
+			janelaUsuarioEditSenha.resizableProperty().setValue(Boolean.FALSE);
 
+			Scene usuarioEditSenhaLayout = new Scene(usuarioEditSenhaXML);
+			janelaUsuarioEditSenha.setScene(usuarioEditSenhaLayout);
+			UsuarioEditSenhaController usuarioEditSenhaController = loader.getController();
+
+			usuarioEditSenhaController.setJanelaUsuarioEditSenha(janelaUsuarioEditSenha);
+			usuarioEditSenhaController.setUsuarioTelaSenha(usuario);
+			janelaUsuarioEditSenha.showAndWait();
+
+			return usuarioEditSenhaController.isOkClick();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	public void configuraStage() {
 		this.setStage(new Stage());
 		this.getStage().initModality(Modality.APPLICATION_MODAL);
