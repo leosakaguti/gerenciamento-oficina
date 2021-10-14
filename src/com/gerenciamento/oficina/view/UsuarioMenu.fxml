@@ -19,7 +19,7 @@
                   <Button fx:id="btnNovo" layoutX="227.0" layoutY="25.0" minWidth="32.0" mnemonicParsing="false" onAction="#onClickBtnNovo" prefHeight="25.0" prefWidth="80.0" text="Novo" />
                   <Button fx:id="btnEditar" layoutX="313.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnEditar" prefWidth="120.0" text="Editar Selecionado" />
                   <Button fx:id="btnExcluir" layoutX="439.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnExcluir" prefWidth="80.0" text="Excluir" />
-                  <Label fx:id="lblPesquisar" layoutX="18.0" layoutY="8.0" text="Pesquisar:" />
+                  <Label fx:id="lblPesquisar" layoutX="18.0" layoutY="8.0" text="Pesquisar usuário:" />
                   <Button fx:id="btnAlterarSenha" layoutX="133.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnAlterarSenha" text="Alterar Senha" />
                </children>
             </AnchorPane>

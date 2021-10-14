@@ -257,13 +257,7 @@ public class ListaUsuariosController implements Initializable{
 
                     String lowerCaseFilter = newValue.toLowerCase();
 
-                    if (usuarios.getNomeUsuario().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (usuarios.getUsuario().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (usuarios.getIsAdmin().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (usuarios.getCodUsuario().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    if (usuarios.getUsuario().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
                     } else {
                         return false;
