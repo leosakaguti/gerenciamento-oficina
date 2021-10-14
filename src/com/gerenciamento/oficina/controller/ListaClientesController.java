@@ -243,15 +243,7 @@ public class ListaClientesController implements Initializable{
 
                     String lowerCaseFilter = newValue.toLowerCase();
 
-                    if (clientes.getNomeCliente().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (clientes.getCpf().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (clientes.getUnidadeFederativa().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (clientes.getNumContato().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (clientes.getEnderecoCliente().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    if (clientes.getCpf().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
                     } else {
                         return false;
