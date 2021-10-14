@@ -112,7 +112,7 @@ public class LoginMenuController implements Initializable{
 	                this.getStage().setScene(menuLayout);
 	                this.getStage().setTitle("Gerenciamento de Oficina");
 	                this.getStage().initModality(Modality.WINDOW_MODAL);
-	                this.getStage().setResizable(true);
+	                this.getStage().setResizable(false);
 	                this.getStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
 	                    @Override
 	                    public void handle(WindowEvent event) {
