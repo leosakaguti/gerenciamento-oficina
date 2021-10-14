@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 
 import com.gerenciamento.oficina.dao.Conexao;
 import com.gerenciamento.oficina.dao.OrdemServicoDAO;
+import com.gerenciamento.oficina.dao.VeiculoDAO;
 import com.gerenciamento.oficina.entity.OrdemServico;
 
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -21,7 +22,10 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -31,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ListaOrdensController implements Initializable{
@@ -79,6 +84,12 @@ public class ListaOrdensController implements Initializable{
 
     @FXML
     private Label lblPlacaVeicValue;
+    
+    @FXML
+    private Label lblValorTotal;
+
+    @FXML
+    private Label lblValorTotalValue;
 
     @FXML
     private AnchorPane pnlPrincipal;
@@ -88,12 +99,15 @@ public class ListaOrdensController implements Initializable{
 
     @FXML
     private TableColumn<OrdemServico, String> tbcDataEmis;
-
+    
     @FXML
-    private TableColumn<OrdemServico, String> tbcPlacaVeic;
+    private TableColumn<OrdemServico, String> tbcCodVeic;
     
     @FXML
     private TableColumn<OrdemServico, String> tbcStatusOrdem;
+    
+    @FXML
+    private TableColumn<OrdemServico, String> tbcPlacaVeiculo;
 
     @FXML
     private TableView<OrdemServico> tbvOrdens;
@@ -106,6 +120,8 @@ public class ListaOrdensController implements Initializable{
 	private ObservableList<OrdemServico> observableListaOrdens = FXCollections.observableArrayList();
 
 	private OrdemServicoDAO ordemDAO;
+	
+	private VeiculoDAO veiculoDAO = new VeiculoDAO();
 
 	private Stage stage;
 	
@@ -151,8 +167,24 @@ public class ListaOrdensController implements Initializable{
 
 		boolean btnConfirmarClic = this.onShowTelaOrdemCadastrar(ordemServico);
 		
+		String sql = "select cod_usuario from usuario"
+				   + " where logado = 1";
+		
+		try {
+			connection = new Conexao().getConnection();
+			
+			preparedStatement = connection.prepareStatement(sql);
+			rs = preparedStatement.executeQuery();
+			
+			if(rs.next()) {
+				ordemServico.setCodUsuario(rs.getLong("cod_usuario"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		if (btnConfirmarClic) {
-			ordemServico.setStatusOrdem(Long.parseLong("0"));
 			this.getOrdemDAO().save(ordemServico);
 			this.carregarTableViewOrdens();
 		}
@@ -160,12 +192,35 @@ public class ListaOrdensController implements Initializable{
 
     @FXML
     void onClickBtnProdutos(ActionEvent event) {
+    	try {
+    		OrdemServico ordemServico = this.tbvOrdens.getSelectionModel().selectedItemProperty().getValue();
+    		System.out.println("ordemServico 194: "+ordemServico);
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/ProdutosOrdemServico.fxml"));
+			Parent itensProdutoXML = loader.load();
 
+			Stage janelaItensProduto = new Stage();
+			janelaItensProduto.setTitle("Produtos da Ordem de Serviço");
+			janelaItensProduto.initModality(Modality.APPLICATION_MODAL);
+			janelaItensProduto.resizableProperty().setValue(Boolean.FALSE);
+
+			Scene itensProdutoLayout = new Scene(itensProdutoXML);
+			janelaItensProduto.setScene(itensProdutoLayout);
+
+			ItensProdutoController itensProdutoController = loader.getController();
+			itensProdutoController.setOrdemServico(ordemServico);
+			itensProdutoController.setJanelaItensProd(janelaItensProduto);
+
+			janelaItensProduto.showAndWait();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     @FXML
     void onClickBtnServicos(ActionEvent event) {
-
+    	
     }
     
 	public List<OrdemServico> getListaOrdens() {
@@ -215,10 +270,15 @@ public class ListaOrdensController implements Initializable{
 
 		tbcCodOrdem.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCodOrdem().toString()));
 		tbcDataEmis.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getDataEmissao().toString()));
-		tbcPlacaVeic.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPlacaVeiculo()));
+		tbcCodVeic.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getVeiculo().getCodVeiculo().toString()));
 		tbcStatusOrdem.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getStatusOrdem().toString()));
-
-        String query = "SELECT cod_ordem, data_emissao, placa_carro, status_ordem FROM ordem_servico";
+		tbcPlacaVeiculo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getVeiculo().getPlacaVeiculo()));
+		
+		this.setListaOrdens(this.getOrdemDAO().getAll());
+		this.setObservableListaOrdens(FXCollections.observableArrayList(this.getListaOrdens()));
+		this.tbvOrdens.setItems(this.getObservableListaOrdens());
+		
+        String query = "SELECT cod_ordem, data_emissao, cod_veiculo, status_ordem FROM ordem_servico";
 
         try {
             connection = new Conexao().getConnection();
@@ -229,7 +289,7 @@ public class ListaOrdensController implements Initializable{
                 OrdemServico ordens = new OrdemServico();
                 ordens.setCodOrdem(rs.getLong("cod_ordem"));
                 ordens.setDataEmissao(rs.getDate("data_emissao"));
-                ordens.setPlacaVeiculo(rs.getString("placa_carro"));
+                ordens.setVeiculo(this.veiculoDAO.get(rs.getLong("cod_veiculo")));
                 ordens.setStatusOrdem(rs.getLong("status_ordem"));
 
                 results.add(ordens);
@@ -246,12 +306,10 @@ public class ListaOrdensController implements Initializable{
 
                     String lowerCaseFilter = newValue.toLowerCase();
 
-                    if (ordens.getPlacaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    if (ordens.getCodOrdem().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
-                    } else if (ordens.getCodOrdem().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (ordens.getDataEmissao().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
+                    } else if (ordens.getVeiculo().getPlacaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    	return true;
                     } else {
                         return false;
                     }
@@ -279,10 +337,11 @@ public class ListaOrdensController implements Initializable{
 	
 	public void selecionarItemTableViewOrdem(OrdemServico ordemServico) {
 		if (ordemServico != null) {
-			//this.lblClienteValue.setText(ordemServico.getVeiculo().getNomeCliente());
+			this.lblClienteValue.setText(ordemServico.getVeiculo().getCliente().getNomeCliente());
 			this.lblCodOrdemValue.setText(ordemServico.getCodOrdem().toString());
 			this.lblDataEmisValue.setText(ordemServico.getDataEmissao().toString());
-			this.lblPlacaVeicValue.setText(ordemServico.getPlacaVeiculo());
+			this.lblPlacaVeicValue.setText(ordemServico.getVeiculo().getPlacaVeiculo());
+			this.lblValorTotalValue.setText(ordemDAO.getValorTotalOrdem(ordemServico.getCodOrdem()).toString());
 			this.btnServicos.setDisable(false);
 			this.btnExcluir.setDisable(false);
 			this.btnGerarRelatorio.setDisable(false);
@@ -292,6 +351,7 @@ public class ListaOrdensController implements Initializable{
 			this.lblCodOrdemValue.setText("");
 			this.lblDataEmisValue.setText("");
 			this.lblPlacaVeicValue.setText("");
+			this.lblValorTotalValue.setText("");
 			this.btnServicos.setDisable(true);
 			this.btnExcluir.setDisable(true);
 			this.btnGerarRelatorio.setDisable(true);
@@ -300,30 +360,30 @@ public class ListaOrdensController implements Initializable{
 	}
 	
 	public boolean onShowTelaOrdemCadastrar(OrdemServico ordemServico) {
-		/*try {
+		try {
 			FXMLLoader loader = new FXMLLoader(
-					getClass().getResource("/com/gerenciamento/oficina/view/OrdemCad.fxml"));
+					getClass().getResource("/com/gerenciamento/oficina/view/OrdemCadastro.fxml"));
 			Parent ordemServicoEditXML = loader.load();
 
-			Stage janelaOrdemEditar = new Stage();
-			janelaOrdemEditar.setTitle("Emissão de Ordem de Serviço");
-			janelaOrdemEditar.initModality(Modality.APPLICATION_MODAL);
-			janelaOrdemEditar.resizableProperty().setValue(Boolean.FALSE);
+			Stage janelaOrdemCad = new Stage();
+			janelaOrdemCad.setTitle("Emissão de Ordem de Serviço");
+			janelaOrdemCad.initModality(Modality.APPLICATION_MODAL);
+			janelaOrdemCad.resizableProperty().setValue(Boolean.FALSE);
 
 			Scene ordemServicoEditLayout = new Scene(ordemServicoEditXML);
-			janelaOrdemEditar.setScene(ordemServicoEditLayout);
+			janelaOrdemCad.setScene(ordemServicoEditLayout);
 
-			OrdemServicoCadController ordemServicoCadController = loader.getController();
-			ordemServicoCadController.setJanelaVeiculoEdit(janelaOrdemEditar);
-			ordemServicoCadController.populaTela(ordemServico);
+			OrdemCadastroController ordemCadController = loader.getController();
+			ordemCadController.setJanelaOrdemCad(janelaOrdemCad);
+			ordemCadController.populaTela(ordemServico);
 
-			janelaOrdemEditar.showAndWait();
+			janelaOrdemCad.showAndWait();
 
-			return ordemServicoCadController.isOkClick();
+			return ordemCadController.isOkClick();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}*/
+		}
 		return false;
 	}
 	public boolean onCloseQuery() {
