@@ -5,22 +5,24 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="369.0" prefWidth="523.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
+<AnchorPane prefHeight="369.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TableView fx:id="tbvServicos" layoutX="205.0" prefHeight="369.0" prefWidth="318.0">
+      <TableView fx:id="tbvServicos" layoutX="226.0" prefHeight="369.0" prefWidth="297.0">
         <columns>
-          <TableColumn fx:id="tbcCodServico" prefWidth="75.0" text="Cod" />
-          <TableColumn fx:id="tbcServico" prefWidth="143.0" text="Servico" />
-            <TableColumn fx:id="tbcValorServico" prefWidth="99.0" text="Valor Servico" />
+          <TableColumn fx:id="tbcCodServico" prefWidth="55.0" text="Cod" />
+          <TableColumn fx:id="tbcServico" prefWidth="153.0" text="Servico" />
+            <TableColumn fx:id="tbcValorServico" prefWidth="88.0" text="Valor Servico" />
         </columns>
       </TableView>
-      <ComboBox fx:id="cbxServicos" layoutX="26.0" layoutY="33.0" prefWidth="150.0" />
-      <Label fx:id="lblServicos" layoutX="26.0" layoutY="15.0" text="Servicos:" />
-      <Button fx:id="btnAdicionar" layoutX="109.0" layoutY="66.0" mnemonicParsing="false" text="Adicionar" />
-      <Button fx:id="btnRemover" layoutX="26.0" layoutY="66.0" mnemonicParsing="false" text="Remover" />
+      <ComboBox fx:id="cbxServicos" layoutX="14.0" layoutY="32.0" prefWidth="150.0" />
+      <Label fx:id="lblServicos" layoutX="14.0" layoutY="14.0" text="Servicos:" />
+      <Button fx:id="btnAdicionar" layoutX="145.0" layoutY="330.0" mnemonicParsing="false" text="Adicionar" />
+      <Button fx:id="btnRemover" layoutX="72.0" layoutY="330.0" mnemonicParsing="false" text="Remover" />
       <Button fx:id="btnVoltar" layoutX="14.0" layoutY="330.0" mnemonicParsing="false" onAction="#onClickBtnVoltar" text="Voltar" />
+      <TextField fx:id="fieldQtdeServ" layoutX="14.0" layoutY="81.0" prefHeight="25.0" prefWidth="48.0" />
+      <Label fx:id="lblQuantidadeServ" layoutX="14.0" layoutY="63.0" text="Qtde:" />
    </children>
 </AnchorPane>
