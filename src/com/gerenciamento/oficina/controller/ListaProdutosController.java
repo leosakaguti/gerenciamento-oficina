@@ -235,10 +235,6 @@ public class ListaProdutosController implements Initializable{
 
                     if (produtos.getNomeProduto().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
-                    } else if (produtos.getVlrUnit().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (produtos.getFornecedor().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
                     } else {
                         return false;
                     }
