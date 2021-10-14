@@ -312,9 +312,9 @@ public class ListaClientesController implements Initializable{
 			Scene clienteEditLayout = new Scene(clienteEditXML);
 			janelaClienteEditar.setScene(clienteEditLayout);
 			ClienteEditController clienteEditController = loader.getController();
-
+			
 			clienteEditController.setJanelaClienteEdit(janelaClienteEditar);
-			clienteEditController.populaTela(cliente);
+			if(operacao.equals(" - Editar")) clienteEditController.populaTela(cliente);
 
 			janelaClienteEditar.showAndWait();
 

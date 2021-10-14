@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="369.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ItensProdutoController">
+   <children>
+      <TableView fx:id="tbvProdutos" layoutX="226.0" prefHeight="369.0" prefWidth="297.0">
+        <columns>
+          <TableColumn fx:id="tbcCodProduto" prefWidth="55.0" text="Cod" />
+          <TableColumn fx:id="tbcNomeProduto" prefWidth="153.0" text="Produto" />
+            <TableColumn fx:id="tbcValorProduto" prefWidth="88.0" text="Valor Produto" />
+        </columns>
+      </TableView>
+      <ComboBox fx:id="cbxProduto" layoutX="14.0" layoutY="57.0" prefWidth="150.0" />
+      <Label fx:id="lblProduto" layoutX="14.0" layoutY="39.0" text="Produto:" />
+      <Button fx:id="btnAdicionar" layoutX="145.0" layoutY="330.0" mnemonicParsing="false" onAction="#onClickBtnAdicionar" text="Adicionar" />
+      <Button fx:id="btnRemover" layoutX="72.0" layoutY="330.0" mnemonicParsing="false" onAction="#onClickBtnRemover" text="Remover" />
+      <Button fx:id="btnVoltar" layoutX="14.0" layoutY="330.0" mnemonicParsing="false" onAction="#onClickBtnVoltar" text="Voltar" />
+      <TextField fx:id="fieldQtdeProd" layoutX="14.0" layoutY="106.0" prefHeight="25.0" prefWidth="48.0" />
+      <Label fx:id="lblQuantidadeProd" layoutX="14.0" layoutY="88.0" text="Qtde:" />
+      <Label fx:id="lblOrdemServico" layoutX="14.0" layoutY="8.0" text="Ordem de Servico:">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblOrdemServicoValue" layoutX="137.0" layoutY="10.0">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
