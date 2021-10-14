@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.gerenciamento.oficina.dao.ClienteDAO;
 import com.gerenciamento.oficina.dao.Conexao;
 import com.gerenciamento.oficina.dao.VeiculoDAO;
 import com.gerenciamento.oficina.entity.Veiculo;
@@ -71,6 +72,9 @@ public class ListaVeiculosController implements Initializable{
 
     @FXML
     private TableColumn<Veiculo, String> tbcCodVeic;
+    
+    @FXML
+    private TableColumn<Veiculo, String> tbcCodCliente;
 
     @FXML
     private TableColumn<Veiculo, String> tbcNomeCliente;
@@ -95,6 +99,8 @@ public class ListaVeiculosController implements Initializable{
 	private ObservableList<Veiculo> observableListaVeiculos = FXCollections.observableArrayList();
 
 	private VeiculoDAO veiculoDAO;
+	
+	ClienteDAO clienteDAO = new ClienteDAO();
 
 	private Stage stage;
 	
@@ -203,15 +209,19 @@ public class ListaVeiculosController implements Initializable{
 	
 	public void carregarTableViewVeiculos() {
 		ObservableList<Veiculo> results = FXCollections.observableArrayList();
-
+		
 		tbcCodVeic.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCodVeiculo().toString()));
-		tbcNomeCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNomeCliente()));
+		tbcCodCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCliente().getCodCliente().toString()));
+		tbcNomeCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCliente().getNomeCliente()));
 		tbcPlaca.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getPlacaVeiculo()));
         tbcCor.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCorVeiculo()));
         tbcMarcaModelo.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getMarcaModeloVeiculo()));
         tbcAno.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getAnoVeiculo().toString()));
-
-        String query = "SELECT cod_veiculo, cod_cliente, placa_carro, cor_carro, marca_modelo, ano, nome_cliente  FROM veiculo";
+        
+        this.setListaVeiculos(this.getVeiculoDAO().getAll());
+		this.setObservableListaVeiculos(FXCollections.observableArrayList(this.getListaVeiculos()));
+		this.tbvVeiculos.setItems(this.getObservableListaVeiculos());
+        String query = "SELECT cod_veiculo, cod_cliente, placa_carro, cor_carro, marca_modelo, ano  FROM veiculo";
 
         try {
             connection = new Conexao().getConnection();
@@ -221,16 +231,17 @@ public class ListaVeiculosController implements Initializable{
             while (rs.next()) {
                 Veiculo veiculos = new Veiculo();
                 veiculos.setCodVeiculo(rs.getLong("cod_veiculo"));
-                veiculos.setCodCliente(rs.getLong("cod_cliente"));
+                veiculos.setCliente(this.clienteDAO.get(rs.getLong("cod_cliente")));
                 veiculos.setPlacaVeiculo(rs.getString("placa_carro"));
                 veiculos.setCorVeiculo(rs.getString("cor_carro"));
                 veiculos.setMarcaModeloVeiculo(rs.getString("marca_modelo"));
                 veiculos.setAnoVeiculo(rs.getLong("ano"));
-                veiculos.setNomeCliente(rs.getString("nome_cliente"));
 
                 results.add(veiculos);
             }
             tbvVeiculos.setItems(results);
+        	
+	        
 
             // Filtro de pesquisa
             FilteredList<Veiculo> veiculosFilteredList = new FilteredList<>(results, b -> true);
@@ -244,12 +255,6 @@ public class ListaVeiculosController implements Initializable{
 
                     if (veiculos.getPlacaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
-                    } else if (veiculos.getCorVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (veiculos.getMarcaModeloVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (veiculos.getNomeCliente().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
                     } else {
                         return false;
                     }
@@ -260,8 +265,6 @@ public class ListaVeiculosController implements Initializable{
 
             tbvVeiculos.setItems(veiculosSortedList);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
