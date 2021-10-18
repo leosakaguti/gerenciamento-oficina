@@ -307,7 +307,9 @@ public class ListaClientesController implements Initializable{
 			
 			clienteEditController.setJanelaClienteEdit(janelaClienteEditar);
 			if(operacao.equals(" - Editar")) clienteEditController.populaTela(cliente);
-
+			else {
+				clienteEditController.setClienteTelaEdit(cliente);
+			}
 			janelaClienteEditar.showAndWait();
 
 			return clienteEditController.isOkClick();
