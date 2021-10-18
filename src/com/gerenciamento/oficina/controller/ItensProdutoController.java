@@ -8,10 +8,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.gerenciamento.oficina.dao.Conexao;
 import com.gerenciamento.oficina.dao.ItensProdutoDAO;
+import com.gerenciamento.oficina.dao.OrdemServicoDAO;
 import com.gerenciamento.oficina.dao.ProdutoDAO;
 import com.gerenciamento.oficina.entity.ItensProduto;
 import com.gerenciamento.oficina.entity.OrdemServico;
@@ -23,12 +25,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
@@ -54,7 +59,10 @@ public class ItensProdutoController implements Initializable{
 
     @FXML
     private Label lblQuantidadeProd;
-
+    
+    @FXML
+    private TableView<ItensProduto> tbvItensProdutos;
+    
     @FXML
     private TableColumn<ItensProduto, String> tbcCodProduto;
 
@@ -63,9 +71,9 @@ public class ItensProdutoController implements Initializable{
 
     @FXML
     private TableColumn<ItensProduto, String> tbcValorProduto;
-
+    
     @FXML
-    private TableView<ItensProduto> tbvItensProdutos;
+    private TableColumn<ItensProduto, String> tbcQtde;
     
     @FXML
     private Label lblOrdemServico;
@@ -78,6 +86,8 @@ public class ItensProdutoController implements Initializable{
     private ItensProduto itensProduto;
     
     private ItensProdutoDAO itensProdutoDAO = new ItensProdutoDAO();
+    
+    private OrdemServicoDAO ordemDAO = new OrdemServicoDAO();
 	
 	private ObservableList<ItensProduto> obsListItensProdutos = FXCollections.observableArrayList();
 	
@@ -94,23 +104,67 @@ public class ItensProdutoController implements Initializable{
     
     @FXML
     void onClickBtnAdicionar(ActionEvent event) {
+    	Produto produto = cbxProduto.getSelectionModel().getSelectedItem();
+    	
+    	if(itensProduto.getOrdemServico().getStatusOrdem() == 0) {
+    		if(fieldQtdeProd.getText().toString() != "" || cbxProduto.getSelectionModel().getSelectedItem() != null) {
+    			itensProduto.setOrdemServico(ordemDAO.get(Long.parseLong(lblOrdemServicoValue.getText())));
+    	    	itensProduto.setProduto(produtoDAO.get(produto.getCodProd()));
+    	    	itensProduto.setQtdeProd(Long.parseLong(fieldQtdeProd.getText()));
+    			if(itensProdutoDAO.VerificaProdutoNaTabela(itensProduto)) {
+            		if(itensProdutoDAO.update(itensProduto, null)) carregarTableViewItensProduto();
+            	}else {
+        	    	if(itensProdutoDAO.save(itensProduto) == 1) carregarTableViewItensProduto();
+            	}
+        		fieldQtdeProd.setText("");
+    		}else {
+    			Alert alertVazio = new Alert(Alert.AlertType.ERROR);
+        		alertVazio.setTitle("Aviso!");
+        		alertVazio.setHeaderText("Campo vazio!");
+        		alertVazio.setContentText("Preencha todos os campos!");
+        		alertVazio.show();
+    		}
+    	}else {
+    		Alert alertBaixado = new Alert(Alert.AlertType.ERROR);
+    		alertBaixado.setTitle("Aviso!");
+    		alertBaixado.setHeaderText("A ordem está baixada!");
+    		alertBaixado.setContentText("Após baixar a ordem, não é permitido alterar itens.");
+    		alertBaixado.show();
+    	}
+    	
     	
     }
 
     @FXML
     void onClickBtnRemover(ActionEvent event) {
+    	Alert alerta = new Alert(AlertType.CONFIRMATION);
+    	ItensProduto itensProduto = tbvItensProdutos.getSelectionModel().getSelectedItem();
+    	itensProduto.setOrdemServico(ordemDAO.get(Long.parseLong(lblOrdemServicoValue.getText())));
+		alerta.setTitle("Pergunta");
+		alerta.setHeaderText("Confirma a exclusão do item de produto "+itensProduto.getProduto().getNomeProduto()+" ?");
 
+		ButtonType botaoNao = ButtonType.NO;
+		ButtonType botaoSim = ButtonType.YES;
+		alerta.getButtonTypes().setAll(botaoSim, botaoNao);
+		Optional<ButtonType> resultado = alerta.showAndWait();
+
+		if (resultado.get() == botaoSim) {
+			this.getItensProdutoDAO().delete(itensProduto);
+			this.carregarTableViewItensProduto();
+		}
     }
     
     @FXML
     void onClickBtnVoltar(ActionEvent event) {
+    	ListaOrdensController listaOrdensController = new ListaOrdensController();
     	this.getJanelaItensProd().close();
+    	listaOrdensController.carregarTableViewOrdens();
+    	
     }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		System.out.println("initialize");
-		this.carregarTableViewItensProduto();
+		setItensProdutoDAO(new ItensProdutoDAO());
 		this.carregarComboBoxProduto();
 		
 		obsListProdutos.setAll(carregarComboBoxProduto());
@@ -131,6 +185,7 @@ public class ItensProdutoController implements Initializable{
 			}
 		});
 		cbxProduto.setItems(obsListProdutos);
+	
 	}
 	
 	public ObservableList<Produto> getObsListProdutos() {
@@ -176,7 +231,7 @@ public class ItensProdutoController implements Initializable{
 	public List<Produto> carregarComboBoxProduto() {
 		List<Produto> items = new ArrayList<>();
 
-		String query = "SELECT cod_produto, nome FROM produto";
+		String query = "SELECT cod_prod, nome FROM produto";
 
 		try {
 			connection = new Conexao().getConnection();
@@ -185,7 +240,7 @@ public class ItensProdutoController implements Initializable{
 
 			while (rs.next()) {
 				Produto produto = new Produto();
-				produto.setCodProd(rs.getLong("cod_produto"));
+				produto.setCodProd(rs.getLong("cod_prod"));
 				produto.setNomeProduto(rs.getString("nome"));
 
 				items.add(produto);
@@ -211,32 +266,39 @@ public class ItensProdutoController implements Initializable{
 	}
 	
 	public void setOrdemServico(OrdemServico ordemServico) {
-		System.out.println("setOrdem");
-		itensProduto.setOrdemServico(ordemServico);
+		itensProduto = new ItensProduto();
+		this.itensProduto.setOrdemServico(ordemServico);
 		this.lblOrdemServicoValue.setText(itensProduto.getOrdemServico().getCodOrdem().toString());
+		this.carregarTableViewItensProduto();
 	}
 	
 	public void carregarTableViewItensProduto() {
 		ObservableList<ItensProduto> results = FXCollections.observableArrayList();
-
+		
 		tbcCodProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getProduto().getCodProd().toString()));
 		tbcNomeProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getProduto().getNomeProduto()));
 		tbcValorProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getProduto().getVlrUnit().toString()));
-		System.out.println("codOrdem: "+itensProduto.getOrdemServico().getCodOrdem());
+		tbcQtde.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getQtdeProd().toString()));
+		
 		this.setListaItensProd(this.getItensProdutoDAO().getAllByOrdem(itensProduto.getOrdemServico().getCodOrdem()));
 		this.setObsListItensProdutos(FXCollections.observableArrayList(this.getListaItensProd()));
 		this.tbvItensProdutos.setItems(this.getObsListItensProdutos());
 		
-        String query = "SELECT cod_produto, nome, vlr_unit FROM itens_produto";
+        String query = "SELECT cod_prod, qtde FROM itens_produto "
+        			 + "where cod_ordem = ?";
 
         try {
             connection = new Conexao().getConnection();
-            statement = connection.createStatement();
-            rs = statement.executeQuery(query);
+            preparedStatement = connection.prepareStatement(query);
+            
+            preparedStatement.setLong(1, itensProduto.getOrdemServico().getCodOrdem());
+            
+            rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 ItensProduto itensProduto = new ItensProduto();
-                itensProduto.setProduto(this.produtoDAO.get(rs.getLong("cod_ordem")));
+                itensProduto.setProduto(this.produtoDAO.get(rs.getLong("cod_prod")));
+                itensProduto.setQtdeProd(rs.getLong("qtde"));
 
                 results.add(itensProduto);
             }
