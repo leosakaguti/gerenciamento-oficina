@@ -109,6 +109,9 @@ public class ClienteEditController implements Initializable{
 		return okClick;
 	}
 	
+	public void setClienteTelaEdit(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	private boolean validarCampos() {
 		String mensagemErros = new String();
 
