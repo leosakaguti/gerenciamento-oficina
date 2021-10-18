@@ -41,6 +41,9 @@ import javafx.stage.Stage;
 public class ListaOrdensController implements Initializable{
 	
 	@FXML
+    private Button btnBaixarOrdem;
+	
+	@FXML
     private Button btnExcluir;
 
     @FXML
@@ -129,31 +132,38 @@ public class ListaOrdensController implements Initializable{
     Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet rs = null;
+    
+    @FXML
+    void onClickBtnBaixar(ActionEvent event) {
+    	OrdemServico ordemServico = this.tbvOrdens.getSelectionModel().getSelectedItem();
 
+    	if(ordemDAO.BaixarOrdem(ordemServico.getCodOrdem())) {
+    		carregarTableViewOrdens();
+    	}
+    }
+    
     @FXML
     void onClickBtnExcluir(ActionEvent event) {
     	OrdemServico ordemServico = this.tbvOrdens.getSelectionModel().getSelectedItem();
-
-		if (ordemServico != null) {
-
-			Alert alerta = new Alert(AlertType.CONFIRMATION);
-			alerta.setTitle("Pergunta");
-			alerta.setHeaderText("Confirma a exclusão da ordem "+ordemServico.getCodOrdem()+" ?");
-
-			ButtonType botaoNao = ButtonType.NO;
-			ButtonType botaoSim = ButtonType.YES;
-			alerta.getButtonTypes().setAll(botaoSim, botaoNao);
-			Optional<ButtonType> resultado = alerta.showAndWait();
-
-			if (resultado.get() == botaoSim) {
-				this.getOrdemDAO().delete(ordemServico);
-				this.carregarTableViewOrdens();
+			if (ordemServico != null) {
+					Alert alerta = new Alert(AlertType.CONFIRMATION);
+					alerta.setTitle("Pergunta");
+					alerta.setHeaderText("Confirma a exclusão da ordem "+ordemServico.getCodOrdem()+" ?");
+		
+					ButtonType botaoNao = ButtonType.NO;
+					ButtonType botaoSim = ButtonType.YES;
+					alerta.getButtonTypes().setAll(botaoSim, botaoNao);
+					Optional<ButtonType> resultado = alerta.showAndWait();
+		
+					if (resultado.get() == botaoSim) {
+						this.getOrdemDAO().delete(ordemServico);
+						this.carregarTableViewOrdens();
+					}
+			} else {
+				Alert alerta = new Alert(Alert.AlertType.ERROR);
+				alerta.setContentText("Por favor, escolha uma ordem na tabela!");
+				alerta.show();
 			}
-		} else {
-			Alert alerta = new Alert(Alert.AlertType.ERROR);
-			alerta.setContentText("Por favor, escolha uma ordem na tabela!");
-			alerta.show();
-		}
     }
 
     @FXML
@@ -194,7 +204,6 @@ public class ListaOrdensController implements Initializable{
     void onClickBtnProdutos(ActionEvent event) {
     	try {
     		OrdemServico ordemServico = this.tbvOrdens.getSelectionModel().selectedItemProperty().getValue();
-    		System.out.println("ordemServico 194: "+ordemServico);
 			FXMLLoader loader = new FXMLLoader(
 					getClass().getResource("/com/gerenciamento/oficina/view/ProdutosOrdemServico.fxml"));
 			Parent itensProdutoXML = loader.load();
@@ -206,11 +215,15 @@ public class ListaOrdensController implements Initializable{
 
 			Scene itensProdutoLayout = new Scene(itensProdutoXML);
 			janelaItensProduto.setScene(itensProdutoLayout);
-
+			janelaItensProduto.setOnCloseRequest(e -> {
+				janelaItensProduto.close();
+				carregarTableViewOrdens();
+			});
+			
 			ItensProdutoController itensProdutoController = loader.getController();
-			itensProdutoController.setOrdemServico(ordemServico);
 			itensProdutoController.setJanelaItensProd(janelaItensProduto);
-
+			itensProdutoController.setOrdemServico(ordemServico);
+			
 			janelaItensProduto.showAndWait();
 
 		} catch (Exception e) {
@@ -346,6 +359,9 @@ public class ListaOrdensController implements Initializable{
 			this.btnExcluir.setDisable(false);
 			this.btnGerarRelatorio.setDisable(false);
 			this.btnProdutos.setDisable(false);
+			if(ordemServico.getStatusOrdem() == 0) {
+				this.btnBaixarOrdem.setDisable(false);
+			}
 		} else {
 			this.lblClienteValue.setText("");
 			this.lblCodOrdemValue.setText("");
@@ -356,6 +372,7 @@ public class ListaOrdensController implements Initializable{
 			this.btnExcluir.setDisable(true);
 			this.btnGerarRelatorio.setDisable(true);
 			this.btnProdutos.setDisable(true);
+			this.btnBaixarOrdem.setDisable(true);
 		}
 	}
 	
