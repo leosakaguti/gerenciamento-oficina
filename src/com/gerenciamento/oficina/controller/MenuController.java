@@ -104,7 +104,28 @@ public class MenuController implements Initializable{
 
     @FXML
     void onClickBtnServico(ActionEvent event) {
+    	try {
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/ServicoMenu.fxml"));
+			Parent servicoListaXML = loader.load();
 
+			ListaServicosController listaServicoController = loader.getController();
+			Scene servicoListaLayout = new Scene(servicoListaXML);
+
+			this.getStage().setScene(servicoListaLayout);
+			this.getStage().setTitle("Consulta de Serviços");
+
+			this.getStage().setOnCloseRequest(e -> {
+				if (listaServicoController.onCloseQuery()) {
+					this.getStage().close();
+				} else {
+					e.consume();
+				}
+			});
+			this.stage.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     @FXML
