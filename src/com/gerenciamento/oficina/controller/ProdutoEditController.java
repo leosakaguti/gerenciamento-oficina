@@ -104,7 +104,7 @@ public class ProdutoEditController implements Initializable{
 		if (this.fieldFornecedor.getText() == null || this.fieldFornecedor.getText().trim().length() == 0) {
 			mensagemErros += "Informe o fornecedor do produto!\n";
 		}
-		if (this.fieldVlrUnit.getText() == null || this.fieldVlrUnit.getText().trim().length() == 0 && Double.parseDouble(this.fieldVlrUnit.getText()) > 0) {
+		if (this.fieldVlrUnit.getText() == null || this.fieldVlrUnit.getText().trim().length() == 0 && Double.parseDouble(this.fieldVlrUnit.getText()) == 0) {
 			mensagemErros += "Informe o valor unitário do produto!\n";
 		}
 		if (this.fieldNomeProduto.getText() == null || this.fieldNomeProduto.getText().trim().length() == 0) {
