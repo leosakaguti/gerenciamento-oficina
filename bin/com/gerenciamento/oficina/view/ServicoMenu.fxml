@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="pnlPrincipal" prefHeight="475.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ListaServicosController">
+   <children>
+      <SplitPane fx:id="splitPaneClientes" dividerPositions="0.130879345603272" layoutX="-3.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="514.0" prefWidth="566.0">
+        <items>
+          <AnchorPane fx:id="pnlCima" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <Label fx:id="lblPesquisar" layoutX="18.0" layoutY="6.0" text="Pesquisar serviço:" />
+                  <TextField fx:id="fieldPesquisar" layoutX="18.0" layoutY="23.0" prefHeight="25.0" prefWidth="100.0" />
+                  <Button fx:id="btnNovo" layoutX="174.0" layoutY="23.0" minWidth="32.0" mnemonicParsing="false" onAction="#onClickBtnNovo" prefHeight="25.0" prefWidth="120.0" text="Novo" />
+                  <Button fx:id="btnEditar" layoutX="304.0" layoutY="23.0" mnemonicParsing="false" onAction="#onClickBtnEditar" prefWidth="120.0" text="Editar Selecionado" />
+                  <Button fx:id="btnExcluir" layoutX="434.0" layoutY="23.0" mnemonicParsing="false" onAction="#onClickBtnExcluir" prefWidth="120.0" text="Excluir" />
+               </children>
+            </AnchorPane>
+          <AnchorPane fx:id="pnlBaixo" minHeight="0.0" minWidth="0.0" prefHeight="497.0" prefWidth="789.0">
+               <children>
+                  <TableView fx:id="tbvServicos" layoutX="1.0" prefHeight="442.0" prefWidth="564.0">
+                    <columns>
+                      <TableColumn fx:id="tbcCodServico" prefWidth="77.0" text="CodServico" />
+                        <TableColumn fx:id="tbcDescServico" prefWidth="375.0" text="Descrição Serviço" />
+                        <TableColumn fx:id="tbcVlrUnit" prefWidth="111.0" text="Valor Serviço" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
