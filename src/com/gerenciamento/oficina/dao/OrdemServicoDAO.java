@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gerenciamento.oficina.entity.OrdemServico;
+import com.gerenciamento.oficina.entity.Produto;
+
+import javafx.scene.control.Alert;
 
 public class OrdemServicoDAO implements DAO<OrdemServico>{
 	
@@ -207,6 +210,11 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			stm.execute();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Alert alertExcluir = new Alert(Alert.AlertType.ERROR);
+    		alertExcluir.setTitle("Aviso!");
+    		alertExcluir.setHeaderText("A ordem que você tentou excluir possui itens!");
+    		alertExcluir.setContentText("Para removê-la, remova seus itens.");
+    		alertExcluir.show();
 		} finally {
 			try {
 				if (stm != null) {
@@ -226,8 +234,9 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 
 	public Double getValorTotalOrdem(Long cod_ordem) {
 		Double valorTotal = Double.parseDouble("0");
-		
-		String sql = "select valor_servico, qtde from itens_servico"
+		ProdutoDAO produtoDAO = new ProdutoDAO();
+		/*ServicoDAO servicoDAO = new ServicoDAO();
+		String sql = "select cod_servico, qtde from itens_servico"
 				   + " where cod_ordem = ?";
 
 		Connection conexao = null;
@@ -245,8 +254,9 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-
-				valorTotal += rset.getLong("valor_servico") * rset.getLong("qtde");
+				Servico servico = servicoDAO.get(rset.getLong("cod_servico"));
+				System.out.println("produto.getVlrUnit(): "+servico.getVlrUnit());
+				valorTotal += servico.getVlrUnit() * rset.getLong("qtde");
 				System.out.println("valorTotal: "+valorTotal);
 			}
 
@@ -264,9 +274,9 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		
-		String sql2 = "select vlr_unit, qtde from itens_produto"
+		String sql2 = "select cod_prod, qtde from itens_produto"
 				   + " where cod_ordem = ?";
 		
 		Connection conn2 = null;
@@ -284,9 +294,8 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			rset2 = stm2.executeQuery();
 
 			while (rset2.next()) {
-
-				valorTotal += rset2.getLong("vlr_unit") * rset2.getLong("qtde");
-				System.out.println("valorTotal: "+valorTotal);
+				Produto produto = produtoDAO.get(rset2.getLong("cod_prod"));
+				valorTotal += produto.getVlrUnit() * rset2.getLong("qtde");
 			}
 
 		} catch (Exception e) {
@@ -307,5 +316,40 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 
 		return valorTotal;
 	}
+	
+	public boolean BaixarOrdem(Long cod_ordem) {
+		String sql = "update ordem_servico set status_ordem = ? "
+				   + "where cod_ordem = ?";
 
+		Connection conexao = null;
+
+		PreparedStatement stm = null;
+
+		try {
+			conexao = new Conexao().getConnection();
+
+			stm = conexao.prepareStatement(sql);
+			stm.setLong(1, 1);
+			stm.setLong(2, cod_ordem);
+
+			stm.execute();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+				}
+
+				if (conexao != null) {
+					conexao.close();
+				}
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 }
