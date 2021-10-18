@@ -125,7 +125,7 @@ public class ClienteDAO implements DAO<Cliente>{
 
 			stm.setString(1, cliente.getNomeCliente());
 			stm.setLong(2, cliente.getCpf());
-			stm.setString(3, cliente.getUnidadeFederativa());
+			stm.setString(3, cliente.getUnidadeFederativa().toUpperCase());
 			stm.setString(4, cliente.getNumContato());
 			stm.setString(5, cliente.getEnderecoCliente());
 			
