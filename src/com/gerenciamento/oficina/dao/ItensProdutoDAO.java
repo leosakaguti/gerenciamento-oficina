@@ -273,5 +273,46 @@ public class ItensProdutoDAO implements DAO<ItensProduto>{
 		}
 		return false;
 	}
+	
+	public boolean VerificaProdutoNaTabela(ItensProduto itensProduto) {
+		String sql = "select 1 from itens_produto"
+				   + " where cod_ordem = ?"
+				   + "   and cod_prod = ?";
 
+		Connection conexao = null;
+
+		PreparedStatement stm = null;
+
+		ResultSet rset = null;
+
+		try {
+
+			conexao = new Conexao().getConnection();
+
+			stm = conexao.prepareStatement(sql);
+			stm.setLong(1, itensProduto.getOrdemServico().getCodOrdem());
+			stm.setLong(2, itensProduto.getProduto().getCodProd());
+			rset = stm.executeQuery();
+
+			if (rset.next()) {
+				return true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stm != null) {
+					stm.close();
+				}
+
+				if (conexao != null) {
+					conexao.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 }
