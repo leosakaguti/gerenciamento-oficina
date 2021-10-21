@@ -23,8 +23,8 @@
       <Label fx:id="lblCliente" layoutX="324.0" layoutY="123.0" text="Cliente:" />
       <Button fx:id="btnGerarRelatorio" layoutX="483.0" layoutY="271.0" mnemonicParsing="false" onAction="#onClickBtnGerar" text="Gerar Relatório" />
       <Button fx:id="btnNovo" layoutX="341.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnNovo" text="Novo" />
-      <TextField fx:id="fieldPesquisar" layoutX="324.0" layoutY="27.0" prefHeight="25.0" prefWidth="97.0" />
-      <Label fx:id="lblPesquisar" layoutX="324.0" layoutY="10.0" text="Pesquisar:" />
+      <TextField fx:id="fieldPesquisar" layoutX="324.0" layoutY="27.0" prefHeight="25.0" prefWidth="106.0" />
+      <Label fx:id="lblPesquisar" layoutX="324.0" layoutY="10.0" text="Pesquisar por placa:" />
       <Button fx:id="btnExcluir" layoutX="392.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnExcluir" text="Excluir" />
       <Label fx:id="lblDataEmis" layoutX="324.0" layoutY="149.0" text="Data Emissão:" />
       <Button fx:id="btnServicos" layoutX="448.0" layoutY="304.0" mnemonicParsing="false" onAction="#onClickBtnServicos" text="Servicos" />
@@ -36,5 +36,7 @@
       <Label fx:id="lblValorTotal" layoutX="324.0" layoutY="176.0" text="Valor Total:" />
       <Label fx:id="lblValorTotalValue" layoutX="387.0" layoutY="176.0" />
       <Button fx:id="btnBaixarOrdem" layoutX="388.0" layoutY="271.0" mnemonicParsing="false" onAction="#onClickBtnBaixar" text="Baixar Ordem" />
+      <Label layoutX="324.0" layoutY="222.0" text="Status 0 = Aberta" />
+      <Label layoutX="324.0" layoutY="242.0" text="Status 1 = Baixada" />
    </children>
 </AnchorPane>
