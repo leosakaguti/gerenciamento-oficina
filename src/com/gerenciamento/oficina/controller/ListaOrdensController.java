@@ -233,7 +233,33 @@ public class ListaOrdensController implements Initializable{
 
     @FXML
     void onClickBtnServicos(ActionEvent event) {
-    	
+    	try {
+    		OrdemServico ordemServico = this.tbvOrdens.getSelectionModel().selectedItemProperty().getValue();
+			FXMLLoader loader = new FXMLLoader(
+					getClass().getResource("/com/gerenciamento/oficina/view/ServicosOrdemServico.fxml"));
+			Parent itensServicoXML = loader.load();
+
+			Stage janelaItensServico = new Stage();
+			janelaItensServico.setTitle("Serviços da Ordem de Serviço");
+			janelaItensServico.initModality(Modality.APPLICATION_MODAL);
+			janelaItensServico.resizableProperty().setValue(Boolean.FALSE);
+
+			Scene itensServicoLayout = new Scene(itensServicoXML);
+			janelaItensServico.setScene(itensServicoLayout);
+			janelaItensServico.setOnCloseRequest(e -> {
+				janelaItensServico.close();
+				carregarTableViewOrdens();
+			});
+			
+			ItensServicoController itensServicoController = loader.getController();
+			itensServicoController.setJanelaItensServ(janelaItensServico);
+			itensServicoController.setOrdemServico(ordemServico);
+			
+			janelaItensServico.showAndWait();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
     
 	public List<OrdemServico> getListaOrdens() {
@@ -319,9 +345,7 @@ public class ListaOrdensController implements Initializable{
 
                     String lowerCaseFilter = newValue.toLowerCase();
 
-                    if (ordens.getCodOrdem().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
-                        return true;
-                    } else if (ordens.getVeiculo().getPlacaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1){
+                    if (ordens.getVeiculo().getPlacaVeiculo().toLowerCase().indexOf(lowerCaseFilter) != -1){
                     	return true;
                     } else {
                         return false;
