@@ -1,21 +1,19 @@
+@font-face{
+	src: url('Roboto-Regular.ttf');
+}
+
+#pnlPrincipal {
+	-fx-background-color: #4d4d4d;
+}
+
+.label{
+	-fx-font-family: 'Poppins';
+	-fx-color: #ffffff;
+	-fx-text-fill: white;
+}
+
 .button {
-	-fx-background-color: #3399ff;
-	-fx-font-weight: bold;
-	-fx-border-style: solid;
-	-fx-border-width: 1px;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
-}
-
-.button::hover{
-	-fx-background-color: #0080ff;
-}
-
-#fieldUsuario, #fieldSenha {
-	-fx-background-color: #bfbfbf;
-	-fx-border-style: solid;
-	-fx-border-width: 1px;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
-	-fx-prompt-text-fill: black;
+	-fx-font-family: 'Poppins';
+	-fx-background-color: grey;
+	-fx-text-fill: white;
 }
