@@ -4,7 +4,7 @@ public class Cliente {
 	
 	private Long codCliente;
 	
-	private Long cpf;
+	private String cpf;
 	
 	private String unidadeFederativa;
 	
@@ -22,11 +22,11 @@ public class Cliente {
 		this.codCliente = codCliente;
 	}
 
-	public Long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(Long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
