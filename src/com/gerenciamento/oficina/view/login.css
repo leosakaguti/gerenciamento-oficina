@@ -1,0 +1,29 @@
+@font-face{
+	src: url('Roboto-Regular.ttf');
+}
+
+@font-face{
+	src: url('Poppins-Regular.ttf');
+}
+
+#pnlPrincipal{
+	-fx-background-color: #4d4d4d;
+}
+.button {
+	-fx-background-color: grey;
+	-fx-text-fill: white;
+	-fx-font-family: 'Poppins';
+}
+#fieldUsuario, #fieldSenha {
+	-fx-background-color: grey;
+	-fx-font-family: 'Poppins';
+	-fx-text-fill: white;
+}
+
+.label{
+	-fx-font-family: 'Poppins';
+	-fx-color: white;
+}
+#lblLogin {
+	-fx-font-size: 20px;
+}
