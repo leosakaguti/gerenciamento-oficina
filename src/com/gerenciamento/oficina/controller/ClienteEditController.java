@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.gerenciamento.oficina.dao.ClienteDAO;
 import com.gerenciamento.oficina.entity.Cliente;
 
 import javafx.event.ActionEvent;
@@ -73,7 +74,7 @@ public class ClienteEditController implements Initializable{
     void onClickBtnSalvar(ActionEvent event) {
     	if (validarCampos()) {
 			this.cliente.setNomeCliente(this.fieldNome.getText());
-			this.cliente.setCpf(Long.parseLong(this.fieldCPF.getText()));
+			this.cliente.setCpf(ClienteDAO.imprimeCPF(fieldCPF.getText()));
 			this.cliente.setUnidadeFederativa(this.fieldUF.getText());
 			this.cliente.setNumContato(this.fieldNumContato.getText());
 			this.cliente.setEnderecoCliente(this.fieldEndereco.getText());
@@ -99,7 +100,7 @@ public class ClienteEditController implements Initializable{
 		this.cliente = cliente;
 
 		this.fieldNome.setText(cliente.getNomeCliente());
-		this.fieldCPF.setText(String.valueOf(cliente.getCpf()));
+		this.fieldCPF.setText(ClienteDAO.imprimeCPF(fieldCPF.getText()));
 		this.fieldUF.setText(cliente.getUnidadeFederativa());
 		this.fieldNumContato.setText(cliente.getNumContato());
 		this.fieldEndereco.setText(cliente.getEnderecoCliente());
@@ -118,8 +119,8 @@ public class ClienteEditController implements Initializable{
 		if (this.fieldNome.getText() == null || this.fieldNome.getText().trim().length() == 0) {
 			mensagemErros += "Informe o nome!\n";
 		}
-		if (this.fieldCPF.getText() == null || this.fieldCPF.getText().trim().length() == 0) {
-			mensagemErros += "Informe o CPF!\n";
+		if (!ClienteDAO.validaCPF(fieldCPF.getText())) {
+			mensagemErros += "CPF inválido!\n";
 		}
 		if (this.fieldUF.getText() == null || this.fieldUF.getText().trim().length() == 0) {
 			mensagemErros += "Informe a UF!\n";
