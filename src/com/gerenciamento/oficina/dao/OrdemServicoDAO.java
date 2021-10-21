@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.gerenciamento.oficina.entity.OrdemServico;
 import com.gerenciamento.oficina.entity.Produto;
+import com.gerenciamento.oficina.entity.Servico;
 
 import javafx.scene.control.Alert;
 
@@ -235,7 +236,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 	public Double getValorTotalOrdem(Long cod_ordem) {
 		Double valorTotal = Double.parseDouble("0");
 		ProdutoDAO produtoDAO = new ProdutoDAO();
-		/*ServicoDAO servicoDAO = new ServicoDAO();
+		ServicoDAO servicoDAO = new ServicoDAO();
 		String sql = "select cod_servico, qtde from itens_servico"
 				   + " where cod_ordem = ?";
 
@@ -255,9 +256,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 
 			while (rset.next()) {
 				Servico servico = servicoDAO.get(rset.getLong("cod_servico"));
-				System.out.println("produto.getVlrUnit(): "+servico.getVlrUnit());
-				valorTotal += servico.getVlrUnit() * rset.getLong("qtde");
-				System.out.println("valorTotal: "+valorTotal);
+				valorTotal += servico.getVlrServico() * rset.getLong("qtde");
 			}
 
 		} catch (Exception e) {
@@ -274,7 +273,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 		
 		String sql2 = "select cod_prod, qtde from itens_produto"
 				   + " where cod_ordem = ?";
