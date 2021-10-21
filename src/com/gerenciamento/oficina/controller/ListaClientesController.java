@@ -208,7 +208,7 @@ public class ListaClientesController implements Initializable{
 
 		tbcCodCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCodCliente().toString()));
 		tbcNomeCliente.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNomeCliente()));
-		tbcCPF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCpf().toString()));
+		tbcCPF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCpf()));
         tbcUF.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getUnidadeFederativa()));
         tbcContato.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getNumContato()));
         tbcEndereco.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getEnderecoCliente()));
@@ -224,7 +224,7 @@ public class ListaClientesController implements Initializable{
                 Cliente clientes = new Cliente();
                 clientes.setCodCliente(rs.getLong("cod_cliente"));
                 clientes.setNomeCliente(rs.getString("nome"));
-                clientes.setCpf(rs.getLong("cpf_cnpj"));
+                clientes.setCpf(rs.getString("cpf_cnpj"));
                 clientes.setUnidadeFederativa(rs.getString("uf"));
                 clientes.setNumContato(rs.getString("num_contato"));
                 clientes.setEnderecoCliente(rs.getString("endereco"));
@@ -243,8 +243,10 @@ public class ListaClientesController implements Initializable{
 
                     String lowerCaseFilter = newValue.toLowerCase();
 
-                    if (clientes.getCpf().toString().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    if (clientes.getCpf().toLowerCase().indexOf(lowerCaseFilter) != -1) {
                         return true;
+                    } else if(clientes.getCpf().replace(".","").replace(",","").replace("-","").toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    	return true;
                     } else {
                         return false;
                     }
