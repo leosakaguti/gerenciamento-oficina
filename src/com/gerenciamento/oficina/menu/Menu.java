@@ -20,7 +20,7 @@ public class Menu extends Application {
 			Stage loginMenuJanela = new Stage();
 			loginMenuJanela.initModality(Modality.APPLICATION_MODAL);
 			loginMenuJanela.resizableProperty().setValue(Boolean.FALSE);
-			loginMenuJanela.setScene(menuLayout);
+			loginMenuJanela.setScene(menuLayout); 
 			loginMenuJanela.setResizable(false);
 			loginMenuJanela.centerOnScreen();
 			loginMenuJanela.setTitle("Tela de login do sistema");

@@ -7,6 +7,16 @@ public class ItensProduto {
 	private OrdemServico ordemServico;
 	
 	private Long qtdeProd;
+	
+	private Double vlrUnit;
+
+	public Double getVlrUnit() {
+		return vlrUnit;
+	}
+
+	public void setVlrUnit(Double vlrUnit) {
+		this.vlrUnit = vlrUnit;
+	}
 
 	public Produto getProduto() {
 		return produto;

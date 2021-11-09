@@ -161,7 +161,7 @@ public class ItensProdutoDAO implements DAO<ItensProduto>{
 	
 	@Override
 	public int save(ItensProduto itensProduto) {
-		String sql = "insert into itens_produto ( cod_ordem, cod_prod, qtde)" + " values (?,?,?)";
+		String sql = "insert into itens_produto ( cod_ordem, cod_prod, qtde, vlr_unit)" + " values (?,?,?,?)";
 		
 		Connection conexao = null;
 
@@ -176,6 +176,7 @@ public class ItensProdutoDAO implements DAO<ItensProduto>{
 			stm.setLong(1, itensProduto.getOrdemServico().getCodOrdem());
 			stm.setLong(2, itensProduto.getProduto().getCodProd());
 			stm.setLong(3, itensProduto.getQtdeProd());
+			stm.setDouble(4, itensProduto.getProduto().getVlrUnit());
 			
 			stm.execute();
 
@@ -202,7 +203,8 @@ public class ItensProdutoDAO implements DAO<ItensProduto>{
 	public boolean update(ItensProduto itensProduto, String[] params) {
 		String sql = "update itens_produto set qtde = ? "
 				   + " where cod_ordem = ?"
-				   + "   and cod_prod = ?";
+				   + "   and cod_prod = ?"
+				   + "   and vlr_unit = ?";
 
 		Connection conexao = null;
 
@@ -215,6 +217,7 @@ public class ItensProdutoDAO implements DAO<ItensProduto>{
 			stm.setLong(1, itensProduto.getQtdeProd());
 			stm.setLong(2, itensProduto.getOrdemServico().getCodOrdem());
 			stm.setLong(3, itensProduto.getProduto().getCodProd());
+			stm.setDouble(4, itensProduto.getProduto().getVlrUnit());
 
 			stm.execute();
 

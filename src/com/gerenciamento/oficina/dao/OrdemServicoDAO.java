@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gerenciamento.oficina.entity.OrdemServico;
-import com.gerenciamento.oficina.entity.Produto;
-import com.gerenciamento.oficina.entity.Servico;
 
 import javafx.scene.control.Alert;
 
@@ -235,9 +233,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 
 	public Double getValorTotalOrdem(Long cod_ordem) {
 		Double valorTotal = Double.parseDouble("0");
-		ProdutoDAO produtoDAO = new ProdutoDAO();
-		ServicoDAO servicoDAO = new ServicoDAO();
-		String sql = "select cod_servico, qtde from itens_servico"
+		String sql = "select qtde, vlr_servico from itens_servico"
 				   + " where cod_ordem = ?";
 
 		Connection conexao = null;
@@ -255,8 +251,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			rset = stm.executeQuery();
 
 			while (rset.next()) {
-				Servico servico = servicoDAO.get(rset.getLong("cod_servico"));
-				valorTotal += servico.getVlrServico() * rset.getLong("qtde");
+				valorTotal += rset.getDouble("vlr_servico") * rset.getLong("qtde");
 			}
 
 		} catch (Exception e) {
@@ -275,7 +270,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			}
 		}
 		
-		String sql2 = "select cod_prod, qtde from itens_produto"
+		String sql2 = "select qtde, vlr_unit from itens_produto"
 				   + " where cod_ordem = ?";
 		
 		Connection conn2 = null;
@@ -293,8 +288,7 @@ public class OrdemServicoDAO implements DAO<OrdemServico>{
 			rset2 = stm2.executeQuery();
 
 			while (rset2.next()) {
-				Produto produto = produtoDAO.get(rset2.getLong("cod_prod"));
-				valorTotal += produto.getVlrUnit() * rset2.getLong("qtde");
+				valorTotal += rset2.getDouble("vlr_unit") * rset2.getLong("qtde");
 			}
 
 		} catch (Exception e) {

@@ -6,19 +6,19 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pnlPrincipal" prefHeight="169.0" prefWidth="444.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.VeiculoEditController">
+<AnchorPane fx:id="pnlPrincipal" prefHeight="169.0" prefWidth="444.0" stylesheets="@cadastros.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.VeiculoEditController">
    <children>
       <ComboBox fx:id="cbxCliente" layoutX="14.0" layoutY="29.0" prefHeight="25.0" prefWidth="259.0" promptText="Selecione um cliente" />
       <Label fx:id="lblClienteResp" layoutX="14.0" layoutY="11.0" text="Cliente responsável:" />
-      <Label fx:id="lblPlaca" layoutX="280.0" layoutY="11.0" text="Placa:" />
-      <TextField fx:id="fieldPlaca" layoutX="280.0" layoutY="29.0" prefHeight="25.0" prefWidth="88.0" promptText="Placa" />
-      <TextField fx:id="fieldAno" layoutX="14.0" layoutY="78.0" prefHeight="25.0" prefWidth="84.0" promptText="2021" />
-      <Label layoutX="257.0" layoutY="61.0" text="Cor:" />
-      <TextField fx:id="fieldModelo" layoutX="103.0" layoutY="78.0" promptText="Nissan Versa" />
-      <Label fx:id="lblModelo" layoutX="103.0" layoutY="61.0" text="Marca/Modelo:" />
-      <TextField fx:id="fieldCor" layoutX="257.0" layoutY="78.0" promptText="Amarelo" />
+      <Label fx:id="lblPlaca" layoutX="277.0" layoutY="11.0" text="Placa:" />
+      <TextField fx:id="fieldPlaca" layoutX="277.0" layoutY="29.0" prefHeight="25.0" prefWidth="88.0" promptText="Placa" />
+      <TextField fx:id="fieldAno" layoutX="14.0" layoutY="78.0" prefHeight="25.0" prefWidth="98.0" promptText="2021" />
+      <Label layoutX="268.0" layoutY="61.0" text="Cor:" />
+      <TextField fx:id="fieldModelo" layoutX="116.0" layoutY="78.0" prefHeight="25.0" prefWidth="148.0" promptText="Nissan Versa" />
+      <Label fx:id="lblModelo" layoutX="116.0" layoutY="61.0" text="Marca/Modelo:" />
+      <TextField fx:id="fieldCor" layoutX="268.0" layoutY="78.0" prefHeight="25.0" prefWidth="134.0" promptText="Amarelo" />
       <Label fx:id="lblAno" layoutX="14.0" layoutY="61.0" text="Ano Fabricação:" />
       <Button fx:id="btnSalvar" layoutX="335.0" layoutY="124.0" mnemonicParsing="false" onAction="#onClickBtnSalvar" prefWidth="70.0" text="Salvar" />
-      <Button fx:id="btnCancelar" layoutX="259.0" layoutY="124.0" mnemonicParsing="false" onAction="#onClickBtnCancelar" prefWidth="70.0" text="Cancelar" />
+      <Button fx:id="btnCancelar" layoutX="254.0" layoutY="124.0" mnemonicParsing="false" onAction="#onClickBtnCancelar" prefHeight="25.0" prefWidth="77.0" text="Cancelar" />
    </children>
 </AnchorPane>

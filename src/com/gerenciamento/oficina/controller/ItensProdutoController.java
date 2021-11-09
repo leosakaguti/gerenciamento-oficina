@@ -277,14 +277,14 @@ public class ItensProdutoController implements Initializable{
 		
 		tbcCodProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getProduto().getCodProd().toString()));
 		tbcNomeProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getProduto().getNomeProduto()));
-		tbcValorProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getProduto().getVlrUnit().toString()));
+		tbcValorProduto.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getVlrUnit().toString()));
 		tbcQtde.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getQtdeProd().toString()));
 		
 		this.setListaItensProd(this.getItensProdutoDAO().getAllByOrdem(itensProduto.getOrdemServico().getCodOrdem()));
 		this.setObsListItensProdutos(FXCollections.observableArrayList(this.getListaItensProd()));
 		this.tbvItensProdutos.setItems(this.getObsListItensProdutos());
 		
-        String query = "SELECT cod_prod, qtde FROM itens_produto "
+        String query = "SELECT cod_prod, qtde, vlr_unit FROM itens_produto "
         			 + "where cod_ordem = ?";
 
         try {
@@ -299,6 +299,7 @@ public class ItensProdutoController implements Initializable{
                 ItensProduto itensProduto = new ItensProduto();
                 itensProduto.setProduto(this.produtoDAO.get(rs.getLong("cod_prod")));
                 itensProduto.setQtdeProd(rs.getLong("qtde"));
+                itensProduto.setVlrUnit(rs.getDouble("vlr_unit"));
 
                 results.add(itensProduto);
             }

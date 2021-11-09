@@ -100,7 +100,7 @@ public class ClienteEditController implements Initializable{
 		this.cliente = cliente;
 
 		this.fieldNome.setText(cliente.getNomeCliente());
-		this.fieldCPF.setText(ClienteDAO.imprimeCPF(fieldCPF.getText()));
+		this.fieldCPF.setText(cliente.getCpf().replace(".", "").replace(",", "").replace("-", ""));
 		this.fieldUF.setText(cliente.getUnidadeFederativa());
 		this.fieldNumContato.setText(cliente.getNumContato());
 		this.fieldEndereco.setText(cliente.getEnderecoCliente());

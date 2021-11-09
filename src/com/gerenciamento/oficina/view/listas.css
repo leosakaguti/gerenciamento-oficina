@@ -1,17 +1,77 @@
-.button {
-	-fx-background-color: #3399ff;
-	-fx-font-weight: bold;
-	-fx-border-style: solid;
-	-fx-border-width: 1px;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
+@font-face{
+	src: url('Poppins-Regular.ttf');
 }
 
-.field {
-	-fx-background-color: #bfbfbf;
-	-fx-border-style: solid;
-	-fx-border-width: 1px;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
-	-fx-prompt-text-fill: black;
+#pnlPrincipal {
+	-fx-background-color: #303030;
+}
+.split-pane {
+	-fx-background-color: #303030;
+}
+
+.table-view {
+	-fx-background-color: #303030;
+}
+
+.table-view .column-header{
+	-fx-background-color: #303030, grey;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: white;
+    -fx-border-width: .2px;
+    -fx-border-color: grey;
+}
+
+.table-row-cell{
+    -fx-background-color: #303030;
+}
+
+.table-row-cell:selected{
+    -fx-background-color: #262626;
+}
+
+.table-row-cell:odd{
+    -fx-background-color: #262626;
+}
+
+.table-view *.scroll-bar:horizontal {
+    -fx-background-color: #303030;
+}
+
+/* .table-view *.scroll-bar:horizontal .track{
+	-fx-background-color: null;
+}*/
+
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-arrow, 
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+.button {
+	-fx-background-color: grey;
+	-fx-text-fill: white;
+	-fx-font-family: 'Poppins';
+}
+
+.text-field {
+	-fx-background-color: grey;
+	-fx-font-family: 'Poppins';
+	-fx-text-fill: white;
+}
+
+.label{
+	-fx-font-family: 'Poppins';
+	-fx-text-fill: white;
 }

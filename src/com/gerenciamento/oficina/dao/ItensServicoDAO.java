@@ -161,7 +161,7 @@ public class ItensServicoDAO implements DAO<ItensServico>{
 	
 	@Override
 	public int save(ItensServico itensServico) {
-		String sql = "insert into itens_servico ( cod_ordem, cod_servico, qtde)" + " values (?,?,?)";
+		String sql = "insert into itens_servico ( cod_ordem, cod_servico, qtde, vlr_servico)" + " values (?,?,?,?)";
 		
 		Connection conexao = null;
 
@@ -176,6 +176,7 @@ public class ItensServicoDAO implements DAO<ItensServico>{
 			stm.setLong(1, itensServico.getOrdemServico().getCodOrdem());
 			stm.setLong(2, itensServico.getServico().getCodServico());
 			stm.setLong(3, itensServico.getQtde());
+			stm.setDouble(4,  itensServico.getServico().getVlrServico());
 			
 			stm.execute();
 
@@ -202,7 +203,8 @@ public class ItensServicoDAO implements DAO<ItensServico>{
 	public boolean update(ItensServico itensServico, String[] params) {
 		String sql = "update itens_servico set qtde = ? "
 				   + " where cod_ordem = ?"
-				   + "   and cod_servico = ?";
+				   + "   and cod_servico = ?"
+				   + "   and vlr_servico = ?";
 
 		Connection conexao = null;
 
@@ -215,6 +217,7 @@ public class ItensServicoDAO implements DAO<ItensServico>{
 			stm.setLong(1, itensServico.getQtde());
 			stm.setLong(2, itensServico.getOrdemServico().getCodOrdem());
 			stm.setLong(3, itensServico.getServico().getCodServico());
+			stm.setDouble(4, itensServico.getServico().getVlrServico());
 
 			stm.execute();
 

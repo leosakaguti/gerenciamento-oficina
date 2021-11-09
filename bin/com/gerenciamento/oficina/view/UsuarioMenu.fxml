@@ -8,29 +8,29 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pnlPrincipal" prefHeight="471.0" prefWidth="451.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ListaUsuariosController">
+<AnchorPane fx:id="pnlPrincipal" prefHeight="499.0" prefWidth="556.0" stylesheets="@listas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ListaUsuariosController">
    <children>
-      <SplitPane fx:id="splitPaneUsuarios" dividerPositions="0.13827655310621242" layoutX="-3.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="501.0" prefWidth="536.0">
+      <SplitPane fx:id="splitPaneUsuarios" dividerPositions="0.13827655310621242" layoutX="-3.0" layoutY="-2.0" orientation="VERTICAL" prefHeight="501.0" prefWidth="562.0">
         <items>
           <AnchorPane fx:id="pnlCima" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
                  
-                  <TextField fx:id="fieldPesquisar" layoutX="18.0" layoutY="25.0" prefHeight="25.0" prefWidth="100.0" />
-                  <Button fx:id="btnNovo" layoutX="227.0" layoutY="25.0" minWidth="32.0" mnemonicParsing="false" onAction="#onClickBtnNovo" prefHeight="25.0" prefWidth="80.0" text="Novo" />
-                  <Button fx:id="btnEditar" layoutX="313.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnEditar" prefWidth="120.0" text="Editar Selecionado" />
-                  <Button fx:id="btnExcluir" layoutX="439.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnExcluir" prefWidth="80.0" text="Excluir" />
+                  <TextField fx:id="fieldPesquisar" layoutX="18.0" layoutY="25.0" prefHeight="25.0" prefWidth="109.0" />
+                  <Button fx:id="btnNovo" layoutX="378.0" layoutY="25.0" minWidth="32.0" mnemonicParsing="false" onAction="#onClickBtnNovo" prefHeight="25.0" prefWidth="80.0" text="Novo" />
+                  <Button fx:id="btnEditar" layoutX="241.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnEditar" prefHeight="25.0" prefWidth="130.0" text="Editar Selecionado" />
+                  <Button fx:id="btnExcluir" layoutX="465.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnExcluir" prefWidth="80.0" text="Excluir" />
                   <Label fx:id="lblPesquisar" layoutX="18.0" layoutY="8.0" text="Pesquisar usuário:" />
-                  <Button fx:id="btnAlterarSenha" layoutX="133.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnAlterarSenha" text="Alterar Senha" />
+                  <Button fx:id="btnAlterarSenha" layoutX="135.0" layoutY="25.0" mnemonicParsing="false" onAction="#onClickBtnAlterarSenha" prefHeight="25.0" prefWidth="100.0" text="Alterar Senha" />
                </children>
             </AnchorPane>
           <AnchorPane fx:id="pnlBaixo" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <TableView fx:id="tbvUsuarios" layoutX="1.0" prefHeight="442.0" prefWidth="535.0">
+                  <TableView fx:id="tbvUsuarios" layoutX="1.0" prefHeight="442.0" prefWidth="560.0">
                     <columns>
                       <TableColumn fx:id="tbcCodUsuario" prefWidth="78.0" text="CodUsuario" />
                         <TableColumn fx:id="tbcUsuario" prefWidth="158.0" text="Usuário" />
-                        <TableColumn fx:id="tbcNomeUsuario" prefWidth="172.0" text="Nome Usuário" />
-                        <TableColumn fx:id="tbcIsAdmin" prefWidth="126.0" text="Admin(0-Não 1-Sim)" />
+                        <TableColumn fx:id="tbcNomeUsuario" prefWidth="193.0" text="Nome Usuário" />
+                        <TableColumn fx:id="tbcIsAdmin" prefWidth="130.0" text="Admin(0-Não 1-Sim)" />
                     </columns>
                   </TableView>
                </children>

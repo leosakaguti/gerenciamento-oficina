@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pnlPrincipal" prefHeight="165.0" prefWidth="278.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ProdutoEditController">
+<AnchorPane fx:id="pnlPrincipal" prefHeight="165.0" prefWidth="278.0" stylesheets="@cadastros.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ProdutoEditController">
    <children>
       <Label fx:id="lblNomeProduto" layoutX="9.0" layoutY="8.0" text="Nome do Produto:" />
       <TextField fx:id="fieldNomeProduto" layoutX="9.0" layoutY="25.0" prefHeight="25.0" prefWidth="139.0" />
@@ -14,6 +14,6 @@
       <Label fx:id="lblFornecedor" layoutX="10.0" layoutY="54.0" text="Fornecedor:" />
       <TextField fx:id="fieldFornecedor" layoutX="10.0" layoutY="73.0" prefHeight="25.0" prefWidth="139.0" />
       <Button fx:id="btnSalvar" layoutX="211.0" layoutY="122.0" mnemonicParsing="false" onAction="#onClickBtnSalvar" text="Salvar" />
-      <Button fx:id="btnCancelar" layoutX="140.0" layoutY="122.0" mnemonicParsing="false" onAction="#onClickBtnCancelar" text="Cancelar" />
+      <Button fx:id="btnCancelar" layoutX="134.0" layoutY="122.0" mnemonicParsing="false" onAction="#onClickBtnCancelar" text="Cancelar" />
    </children>
 </AnchorPane>

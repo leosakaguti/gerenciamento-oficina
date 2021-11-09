@@ -7,6 +7,16 @@ public class ItensServico {
 	private OrdemServico ordemServico;
 	
 	private Long qtde;
+	
+	private Double vlrServico;
+	
+	public Double getVlrServico() {
+		return vlrServico;
+	}
+
+	public void setVlrServico(Double vlrServico) {
+		this.vlrServico = vlrServico;
+	}
 
 	public Servico getServico() {
 		return servico;

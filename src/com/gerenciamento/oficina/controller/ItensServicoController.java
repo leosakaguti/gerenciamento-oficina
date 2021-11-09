@@ -289,14 +289,14 @@ public class ItensServicoController implements Initializable{
 		
 		tbcCodServico.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getServico().getCodServico().toString()));
 		tbcDescServico.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getServico().getDescServico()));
-		tbcValorServico.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getServico().getVlrServico().toString()));
+		tbcValorServico.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getVlrServico().toString()));
 		tbcQtde.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getQtde().toString()));
 		
 		this.setListaItensServ(this.getItensServicoDAO().getAllByOrdem(itensServico.getOrdemServico().getCodOrdem()));
 		this.setObsListItensServicos(FXCollections.observableArrayList(this.getListaItensServ()));
 		this.tbvItensServicos.setItems(this.getObsListItensServicos());
 		
-        String query = "SELECT cod_servico, qtde FROM itens_servico "
+        String query = "SELECT cod_servico, qtde, vlr_servico FROM itens_servico "
         			 + "where cod_ordem = ?";
 
         try {
@@ -311,6 +311,7 @@ public class ItensServicoController implements Initializable{
                 ItensServico itensServico = new ItensServico();
                 itensServico.setServico(this.servicoDAO.get(rs.getLong("cod_servico")));
                 itensServico.setQtde(rs.getLong("qtde"));
+                itensServico.setVlrServico(rs.getDouble("vlr_servico"));
 
                 results.add(itensServico);
             }
