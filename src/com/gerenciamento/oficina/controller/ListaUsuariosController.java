@@ -325,6 +325,9 @@ public class ListaUsuariosController implements Initializable{
 			if(operacao.equals(" - Editar")) {
 				usuarioEditController.populaTela(usuario);
 				usuarioEditController.verificaOperacao(operacao);
+				usuarioEditController.setOldUsuario(usuario.getUsuario());
+				usuarioEditController.setOldNome(usuario.getNomeUsuario());
+				usuarioEditController.setOldIsAdmin(usuario.getIsAdmin());
 			}else {
 				usuarioEditController.setUsuarioTelaCadastro(usuario);
 			}

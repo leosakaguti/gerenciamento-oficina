@@ -64,11 +64,19 @@ public class UsuarioEditController implements Initializable{
 
 	private boolean okClick = false;
 	
+	private boolean isEdit = false;
+	
+	private String oldUsuario = "";
+	
+	private String oldNome = "";
+	
+	private Long oldIsAdmin;
+	
 	Connection connection = null;
     Statement statement = null;
     PreparedStatement preparedStatement = null;
     ResultSet rs = null;
-
+    
     @FXML
     void onClickBtnCancelar(ActionEvent event) {
     	this.getJanelaUsuarioEdit().close();
@@ -81,16 +89,40 @@ public class UsuarioEditController implements Initializable{
 			this.usuario.setNomeUsuario(this.fieldNomeUsuario.getText());
 			this.usuario.setIsAdmin(Long.parseLong(this.fieldIsAdmin.getText()));
 			this.usuario.setSenhaUsuario(this.fieldSenha.getText());
-
+			
 			this.okClick = true;
 			this.getJanelaUsuarioEdit().close();
 		}
     }
-    
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
-
+	
+	public void setOldUsuario(String usuario) {
+		this.oldUsuario = usuario;
+	}
+	
+	public String getOldUsuario() {
+		return this.oldUsuario;		
+	}
+	
+	public void setOldNome(String nome) {
+		this.oldNome = nome;
+	}
+	
+	public String getOldNome() {
+		return this.oldNome;
+	}
+	
+	public void setOldIsAdmin(Long isAdmin) {
+		this.oldIsAdmin = isAdmin;
+	}
+	
+	public Long getOldIsAdmin() {
+		return this.oldIsAdmin;
+	}
+	
 	public Stage getJanelaUsuarioEdit() {
 		return janelaUsuarioEdit;
 	}
@@ -162,16 +194,16 @@ public class UsuarioEditController implements Initializable{
 		if (this.fieldNomeUsuario.getText() == null || this.fieldNomeUsuario.getText().trim().length() == 0) {
 			mensagemErros += "Informe o nome do Usuário!\n";
 		}
-		if(!validarUsuario()) {
+		if(!validarUsuario() && !this.fieldUsuario.getText().equals(getOldUsuario())) {
 			mensagemErros += "Este usuário já existe!\n";
 		}
-		if(!validarNomeUsuario()) {
+		if(!validarNomeUsuario() && !this.fieldNomeUsuario.getText().equals(getOldNome())) {
 			mensagemErros += "Este nome de usuário já existe!\n";
 		}
 		if (this.fieldIsAdmin.getText() == null || this.fieldIsAdmin.getText().trim().length() == 0) {
 			mensagemErros += "Informe se o usuário é admin ou não!\n";
 		}
-		if (this.fieldSenha.getText() == null || this.fieldSenha.getText().trim().length() < 4) {
+		if (!isEdit && (this.fieldSenha.getText() == null || this.fieldSenha.getText().trim().length() < 4)) {
 			mensagemErros += "Informe a senha antiga ou uma nova de ao menos 4 dígitos!\n";
 		}
 		if (mensagemErros.length() == 0) {
@@ -192,7 +224,8 @@ public class UsuarioEditController implements Initializable{
 		if(operacao.equals(" - Editar")){
 			fieldSenha.setEditable(false);
 			fieldSenha.setDisable(true);
-		}
+			isEdit = true;
+		}else isEdit = false;
 	}
 	
 	public boolean onCloseQuery() {

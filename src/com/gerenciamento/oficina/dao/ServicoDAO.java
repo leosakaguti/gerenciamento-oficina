@@ -143,7 +143,7 @@ public class ServicoDAO implements DAO<Servico>{
 
 	@Override
 	public boolean update(Servico servico, String[] params) {
-		String sql = "update servico set vlr_servico=?, descricao_servico=?"
+		String sql = "update servico set valor_servico=?, descricao_servico=?"
 				   + " where cod_servico = ?";
 
 		Connection conexao = null;

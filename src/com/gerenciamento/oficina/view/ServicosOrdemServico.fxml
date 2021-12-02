@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pnlPrincipal" prefHeight="369.0" prefWidth="523.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ItensServicoController">
+<AnchorPane fx:id="pnlPrincipal" prefHeight="369.0" prefWidth="523.0" stylesheets="@listas.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gerenciamento.oficina.controller.ItensServicoController">
    <children>
       <TableView fx:id="tbvItensServicos" layoutX="194.0" prefHeight="369.0" prefWidth="329.0">
         <columns>
@@ -31,6 +31,6 @@
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblOrdemServicoValue" layoutX="136.0" layoutY="16.0" />
+      <Label fx:id="lblOrdemServicoValue" layoutX="145.0" layoutY="16.0" />
    </children>
 </AnchorPane>

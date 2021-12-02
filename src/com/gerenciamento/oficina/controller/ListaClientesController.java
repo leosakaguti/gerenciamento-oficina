@@ -286,6 +286,7 @@ public class ListaClientesController implements Initializable{
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Pergunta");
 		alert.setHeaderText("Deseja sair da tela de clientes?");
+		
 		ButtonType buttonTypeNO = ButtonType.NO;
 		ButtonType buttonTypeYES = ButtonType.YES;
 		alert.getButtonTypes().setAll(buttonTypeYES, buttonTypeNO);
