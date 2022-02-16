@@ -1,10 +1,14 @@
 package com.gerenciamento.oficina.controller;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.gerenciamento.oficina.dao.ClienteDAO;
+import com.gerenciamento.oficina.dao.Conexao;
 import com.gerenciamento.oficina.entity.Cliente;
 
 import javafx.event.ActionEvent;
@@ -115,13 +119,37 @@ public class ClienteEditController implements Initializable{
 	}
 	private boolean validarCampos() {
 		String mensagemErros = new String();
-
+		
+		if (!ClienteDAO.validaCPF(fieldCPF.getText())) {
+			mensagemErros += "CPF inválido!\n";
+		}else {
+			Connection conn1 = null;
+			PreparedStatement stm1 = null;
+			ResultSet rs1 = null;
+			
+			String sql1 = "select 1 from cliente "+
+						  "where cpf_cnpj = ? ";
+			
+			try {
+				conn1 = new Conexao().getConnection();
+				
+				stm1 = conn1.prepareStatement(sql1);
+				stm1.setString(1, ClienteDAO.imprimeCPF(fieldCPF.getText()));
+				
+				rs1 = stm1.executeQuery();
+				System.out.println("sql");
+				if(rs1.next()) {
+					mensagemErros += "CPF já cadastrado!\n";
+				}rs1.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (this.fieldNome.getText() == null || this.fieldNome.getText().trim().length() == 0) {
 			mensagemErros += "Informe o nome!\n";
 		}
-		if (!ClienteDAO.validaCPF(fieldCPF.getText())) {
-			mensagemErros += "CPF inválido!\n";
-		}
+		
 		if (this.fieldUF.getText() == null || this.fieldUF.getText().trim().length() == 0) {
 			mensagemErros += "Informe a UF!\n";
 		}

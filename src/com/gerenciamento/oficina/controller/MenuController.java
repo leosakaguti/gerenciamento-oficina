@@ -83,18 +83,13 @@ public class MenuController implements Initializable{
 					getClass().getResource("/com/gerenciamento/oficina/view/ClienteMenu.fxml"));
 			Parent clienteListaXML = loader.load();
 
-			ListaClientesController listaClienteController = loader.getController();
 			Scene clienteListaLayout = new Scene(clienteListaXML);
 
 			this.getStage().setScene(clienteListaLayout);
 			this.getStage().setTitle("Consulta de Clientes");
 
 			this.getStage().setOnCloseRequest(e -> {
-				if (listaClienteController.onCloseQuery()) {
-					this.getStage().close();
-				} else {
-					e.consume();
-				}
+				this.getStage().close();
 			});
 			this.stage.show();
 		} catch (Exception e) {
@@ -135,18 +130,13 @@ public class MenuController implements Initializable{
 					getClass().getResource("/com/gerenciamento/oficina/view/OrdemServicoMenu.fxml"));
 			Parent ordemListaXML = loader.load();
 
-			ListaOrdensController listaOrdemController = loader.getController();
 			Scene ordemListaLayout = new Scene(ordemListaXML);
 
 			this.getStage().setScene(ordemListaLayout);
 			this.getStage().setTitle("Consulta de Ordens de Serviço");
 
 			this.getStage().setOnCloseRequest(e -> {
-				if (listaOrdemController.onCloseQuery()) {
-					this.getStage().close();
-				} else {
-					e.consume();
-				}
+				this.getStage().close();
 			});
 			this.stage.show();
 		} catch (Exception e) {
@@ -161,18 +151,13 @@ public class MenuController implements Initializable{
 					getClass().getResource("/com/gerenciamento/oficina/view/ProdutoMenu.fxml"));
 			Parent produtoListaXML = loader.load();
 
-			ListaProdutosController listaProdutoController = loader.getController();
 			Scene produtoListaLayout = new Scene(produtoListaXML);
 
 			this.getStage().setScene(produtoListaLayout);
 			this.getStage().setTitle("Consulta de Produtos");
 
 			this.getStage().setOnCloseRequest(e -> {
-				if (listaProdutoController.onCloseQuery()) {
-					this.getStage().close();
-				} else {
-					e.consume();
-				}
+				this.getStage().close();
 			});
 			this.stage.show();
 		} catch (Exception e) {
@@ -187,18 +172,13 @@ public class MenuController implements Initializable{
 					getClass().getResource("/com/gerenciamento/oficina/view/UsuarioMenu.fxml"));
 			Parent usuarioListaXML = loader.load();
 
-			ListaUsuariosController listaUsuarioController = loader.getController();
 			Scene usuarioListaLayout = new Scene(usuarioListaXML);
 
 			this.getStage().setScene(usuarioListaLayout);
 			this.getStage().setTitle("Consulta de Usuários");
 
 			this.getStage().setOnCloseRequest(e -> {
-				if (listaUsuarioController.onCloseQuery()) {
-					this.getStage().close();
-				} else {
-					e.consume();
-				}
+				this.getStage().close();
 			});
 			this.stage.show();
 		} catch (Exception e) {
@@ -213,18 +193,13 @@ public class MenuController implements Initializable{
 					getClass().getResource("/com/gerenciamento/oficina/view/VeiculoMenu.fxml"));
 			Parent veiculoListaXML = loader.load();
 
-			ListaVeiculosController listaVeiculosController = loader.getController();
 			Scene veiculoListaLayout = new Scene(veiculoListaXML);
 
 			this.getStage().setScene(veiculoListaLayout);
 			this.getStage().setTitle("Consulta de Veiculos");
 
 			this.getStage().setOnCloseRequest(e -> {
-				if (listaVeiculosController.onCloseQuery()) {
-					this.getStage().close();
-				} else {
-					e.consume();
-				}
+				this.getStage().close();
 			});
 			this.stage.show();
 		} catch (Exception e) {

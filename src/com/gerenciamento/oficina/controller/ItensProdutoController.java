@@ -139,19 +139,36 @@ public class ItensProdutoController implements Initializable{
     void onClickBtnRemover(ActionEvent event) {
     	Alert alerta = new Alert(AlertType.CONFIRMATION);
     	ItensProduto itensProduto = tbvItensProdutos.getSelectionModel().getSelectedItem();
-    	itensProduto.setOrdemServico(ordemDAO.get(Long.parseLong(lblOrdemServicoValue.getText())));
-		alerta.setTitle("Pergunta");
-		alerta.setHeaderText("Confirma a exclusão do item de produto "+itensProduto.getProduto().getNomeProduto()+" ?");
-
-		ButtonType botaoNao = ButtonType.NO;
-		ButtonType botaoSim = ButtonType.YES;
-		alerta.getButtonTypes().setAll(botaoSim, botaoNao);
-		Optional<ButtonType> resultado = alerta.showAndWait();
-
-		if (resultado.get() == botaoSim) {
-			this.getItensProdutoDAO().delete(itensProduto);
-			this.carregarTableViewItensProduto();
-		}
+    	
+    	if(itensProduto != null) {
+	    	itensProduto.setOrdemServico(ordemDAO.get(Long.parseLong(lblOrdemServicoValue.getText())));
+	    	
+	    	if(itensProduto.getOrdemServico().getStatusOrdem() == 0) {    		
+				alerta.setTitle("Pergunta");
+				alerta.setHeaderText("Confirma a exclusão do item de produto "+itensProduto.getProduto().getNomeProduto()+" ?");
+		
+				ButtonType botaoNao = ButtonType.NO;
+				ButtonType botaoSim = ButtonType.YES;
+				alerta.getButtonTypes().setAll(botaoSim, botaoNao);
+				Optional<ButtonType> resultado = alerta.showAndWait();
+		
+				if (resultado.get() == botaoSim) {
+					this.getItensProdutoDAO().delete(itensProduto);
+					this.carregarTableViewItensProduto();
+				}
+	    	}else {
+	    		Alert alertBaixado = new Alert(Alert.AlertType.ERROR);
+	    		alertBaixado.setTitle("Aviso!");
+	    		alertBaixado.setHeaderText("A ordem está baixada!");
+	    		alertBaixado.setContentText("Após baixar a ordem, não é permitido alterar itens.");
+	    		alertBaixado.show();
+	    	}
+    	}else {
+    		Alert alertVazio = new Alert(Alert.AlertType.ERROR);
+    		alertVazio.setTitle("Aviso!");
+    		alertVazio.setHeaderText("Selecione um registro para excluir!");
+    		alertVazio.show();
+    	}
     }
     
     @FXML

@@ -144,25 +144,35 @@ public class ItensServicoController implements Initializable{
     	ItensServico itensServico = tbvItensServicos.getSelectionModel().getSelectedItem();
     	
     	if(itensServico != null) {
-    		Alert alerta = new Alert(AlertType.CONFIRMATION);
 	    	itensServico.setOrdemServico(ordemDAO.get(Long.parseLong(lblOrdemServicoValue.getText())));
-			alerta.setTitle("Pergunta");
-			alerta.setHeaderText("Confirma a exclusão do item de serviço "+itensServico.getServico().getDescServico()+" ?");
 	
-			ButtonType botaoNao = ButtonType.NO;
-			ButtonType botaoSim = ButtonType.YES;
-			alerta.getButtonTypes().setAll(botaoSim, botaoNao);
-			Optional<ButtonType> resultado = alerta.showAndWait();
-	
-			if (resultado.get() == botaoSim) {
-				this.getItensServicoDAO().delete(itensServico);
-				this.carregarTableViewItensServico();
-			}
-    	} else {
-    		Alert alertaNulo = new Alert(AlertType.ERROR);
-    		alertaNulo.setTitle("Erro");
-    		alertaNulo.setHeaderText("Para remover, selecione um item na lista!");
-    		alertaNulo.show();
+	    	if(itensServico.getOrdemServico().getStatusOrdem() == 0) {
+	    		Alert alerta = new Alert(AlertType.CONFIRMATION);
+		    	itensServico.setOrdemServico(ordemDAO.get(Long.parseLong(lblOrdemServicoValue.getText())));
+				alerta.setTitle("Pergunta");
+				alerta.setHeaderText("Confirma a exclusão do item de serviço "+itensServico.getServico().getDescServico()+" ?");
+		
+				ButtonType botaoNao = ButtonType.NO;
+				ButtonType botaoSim = ButtonType.YES;
+				alerta.getButtonTypes().setAll(botaoSim, botaoNao);
+				Optional<ButtonType> resultado = alerta.showAndWait();
+		
+				if (resultado.get() == botaoSim) {
+					this.getItensServicoDAO().delete(itensServico);
+					this.carregarTableViewItensServico();
+				}
+	    	} else {
+	    		Alert alertBaixado = new Alert(Alert.AlertType.ERROR);
+	    		alertBaixado.setTitle("Aviso!");
+	    		alertBaixado.setHeaderText("A ordem está baixada!");
+	    		alertBaixado.setContentText("Após baixar a ordem, não é permitido alterar itens.");
+	    		alertBaixado.show();
+	    	}
+    	}else {
+    		Alert alertVazio = new Alert(Alert.AlertType.ERROR);
+    		alertVazio.setTitle("Aviso!");
+    		alertVazio.setHeaderText("Selecione um registro para excluir!");
+    		alertVazio.show();
     	}
     }
     

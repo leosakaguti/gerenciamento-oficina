@@ -125,21 +125,47 @@ public class ListaClientesController implements Initializable{
     @FXML
     void onClickBtnExcluir(ActionEvent event) {
     	Cliente cliente = this.tbvClientes.getSelectionModel().getSelectedItem();
-
+    	
 		if (cliente != null) {
+			
+			Connection conn1 = null;
+			PreparedStatement stm1 = null;
+			ResultSet rs1 = null;
+			
+			String sql1 = "select 1 from veiculo "+
+						  "where cod_cliente = ? ";
+			
+			try {
+				conn1 = new Conexao().getConnection();
+				
+				stm1 = conn1.prepareStatement(sql1);
+				stm1.setLong(1, cliente.getCodCliente());
+				
+				rs1 = stm1.executeQuery();
+				System.out.println("sql veiculo");
+				if(rs1.next()) {
+					Alert alerta = new Alert(AlertType.ERROR);
+					alerta.setTitle("Erro");
+					alerta.setHeaderText("O cliente "+cliente.getNomeCliente()+" não pode ser excluído pois já está cadastrado em um veículo");
+					alerta.show();
+				}
+				else {
+					Alert alerta = new Alert(AlertType.CONFIRMATION);
+					alerta.setTitle("Pergunta");
+					alerta.setHeaderText("Confirma a exclusão do cliente " + cliente.getNomeCliente() + "?");
 
-			Alert alerta = new Alert(AlertType.CONFIRMATION);
-			alerta.setTitle("Pergunta");
-			alerta.setHeaderText("Confirma a exclusão do cliente " + cliente.getNomeCliente() + "?");
+					ButtonType botaoNao = ButtonType.NO;
+					ButtonType botaoSim = ButtonType.YES;
+					alerta.getButtonTypes().setAll(botaoSim, botaoNao);
+					Optional<ButtonType> resultado = alerta.showAndWait();
 
-			ButtonType botaoNao = ButtonType.NO;
-			ButtonType botaoSim = ButtonType.YES;
-			alerta.getButtonTypes().setAll(botaoSim, botaoNao);
-			Optional<ButtonType> resultado = alerta.showAndWait();
-
-			if (resultado.get() == botaoSim) {
-				this.getClienteDAO().delete(cliente);
-				this.carregarTableViewClientes();
+					if (resultado.get() == botaoSim) {
+						this.getClienteDAO().delete(cliente);
+						this.carregarTableViewClientes();
+					}
+				}rs1.close();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		} else {
 			Alert alerta = new Alert(Alert.AlertType.ERROR);
@@ -282,18 +308,6 @@ public class ListaClientesController implements Initializable{
 		}
 	}
 	
-	public boolean onCloseQuery() {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Pergunta");
-		alert.setHeaderText("Deseja sair da tela de clientes?");
-		
-		ButtonType buttonTypeNO = ButtonType.NO;
-		ButtonType buttonTypeYES = ButtonType.YES;
-		alert.getButtonTypes().setAll(buttonTypeYES, buttonTypeNO);
-		Optional<ButtonType> result = alert.showAndWait();
-		return result.get() == buttonTypeYES ? true : false;
-	}
-
 	public boolean onShowTelaClienteEditar(Cliente cliente, String operacao) {
 		try {
 			FXMLLoader loader = new FXMLLoader(

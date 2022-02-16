@@ -144,7 +144,7 @@ public class LoginMenuController implements Initializable{
 	            } else {
 	                Alert alert = new Alert(Alert.AlertType.ERROR);
 	                alert.setTitle("Erro");
-	                alert.setHeaderText("Usu√°rio ou senha incorretos!");
+	                alert.setHeaderText("Usu·rio ou senha incorretos!");
 	                alert.showAndWait();
 	
 	                fieldUsuario.setText("");

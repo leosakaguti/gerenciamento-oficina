@@ -427,15 +427,4 @@ public class ListaOrdensController implements Initializable{
 		}
 		return false;
 	}
-	public boolean onCloseQuery() {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Pergunta");
-		alert.setHeaderText("Deseja sair da tela de ordens de serviço?");
-		ButtonType buttonTypeNO = ButtonType.NO;
-		ButtonType buttonTypeYES = ButtonType.YES;
-		alert.getButtonTypes().setAll(buttonTypeYES, buttonTypeNO);
-		Optional<ButtonType> result = alert.showAndWait();
-		return result.get() == buttonTypeYES ? true : false;
-	}
-
 }

@@ -149,10 +149,11 @@ public class ListaUsuariosController implements Initializable{
 			alerta.getButtonTypes().setAll(botaoSim, botaoNao);
 			Optional<ButtonType> resultado = alerta.showAndWait();
 			
+			System.out.println(System.getProperty("usuario"));
 			if (!usuario.getUsuario().equals(System.getProperty("usuario")) && resultado.get() == botaoSim) {
 				this.getUsuarioDAO().delete(usuario);
 				this.carregarTableViewUsuarios();
-			}else {
+			}else if (usuario.getUsuario().equals(System.getProperty("usuario")) && resultado.get() == botaoSim) {
 				Alert alerta2 = new Alert(AlertType.WARNING);
 				alerta2.setTitle("Erro");
 				alerta2.setHeaderText("Você não pode excluir o seu usuário");
